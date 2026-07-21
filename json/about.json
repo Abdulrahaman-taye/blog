@@ -1,0 +1,126 @@
+{
+  "about": {
+    "title": "About Finance ISL",
+    "subtitle": "Your Trusted Source for Islamic Finance Knowledge",
+    "description": "Finance ISL is a comprehensive educational platform dedicated to promoting understanding of Islamic finance, business ethics, and Sharia-compliant economic principles. We provide high-quality content, research, and resources for students, professionals, and anyone interested in ethical financial systems.",
+    "mission": {
+      "title": "Our Mission",
+      "content": "To democratize access to Islamic finance education and empower individuals and organizations with knowledge of ethical, Sharia-compliant financial systems that promote justice, transparency, and shared prosperity."
+    },
+    "vision": {
+      "title": "Our Vision",
+      "content": "To become the world's leading digital platform for Islamic finance education, fostering a global community of informed practitioners, scholars, and enthusiasts who drive positive change in the financial industry."
+    },
+    "values": [
+      {
+        "title": "Knowledge (Ilm)",
+        "description": "We believe in the transformative power of education and strive to make Islamic finance knowledge accessible to all.",
+        "icon": "book"
+      },
+      {
+        "title": "Integrity (Amanah)",
+        "description": "We uphold the highest standards of accuracy, honesty, and transparency in all our content and interactions.",
+        "icon": "shield"
+      },
+      {
+        "title": "Excellence (Ihsan)",
+        "description": "We pursue excellence in everything we do, from research to content creation to user experience.",
+        "icon": "star"
+      },
+      {
+        "title": "Community (Ummah)",
+        "description": "We foster a supportive learning community where ideas are shared and growth is encouraged.",
+        "icon": "users"
+      },
+      {
+        "title": "Innovation (Ibtikar)",
+        "description": "We embrace innovation while staying true to timeless Islamic principles and values.",
+        "icon": "lightbulb"
+      },
+      {
+        "title": "Service (Khidmah)",
+        "description": "We are committed to serving the community and contributing to the development of Islamic finance globally.",
+        "icon": "heart"
+      }
+    ],
+    "team": {
+      "title": "Our Team",
+      "description": "Finance ISL is powered by a diverse team of Islamic finance scholars, researchers, writers, and technology professionals dedicated to creating valuable educational content.",
+      "members": [
+        {
+          "name": "Dr. Ahmad Hassan",
+          "role": "Chief Editor",
+          "specialization": "Islamic Banking & Finance",
+          "bio": "Dr. Ahmad has over 20 years of experience in Islamic finance academia and consulting. He holds a PhD in Islamic Economics from the International Islamic University Malaysia.",
+          "avatar": "images/team/ahmad.jpg"
+        },
+        {
+          "name": "Dr. Fatima Al-Rashid",
+          "role": "Senior Researcher",
+          "specialization": "Islamic Economics",
+          "bio": "Dr. Fatima is a professor of Islamic Economics with extensive research on contemporary applications of Islamic financial principles.",
+          "avatar": "images/team/fatima.jpg"
+        },
+        {
+          "name": "Sheikh Abdullah Ibrahim",
+          "role": "Sharia Advisor",
+          "specialization": "Islamic Jurisprudence",
+          "bio": "Sheikh Abdullah is a qualified Islamic jurist specializing in financial transactions and Sharia compliance.",
+          "avatar": "images/team/abdullah.jpg"
+        },
+        {
+          "name": "Sarah Abdullah",
+          "role": "Content Director",
+          "specialization": "Halal Marketing",
+          "bio": "Sarah brings 15 years of experience in digital marketing and content strategy, with a focus on ethical business practices.",
+          "avatar": "images/team/sarah.jpg"
+        }
+      ]
+    },
+    "stats": {
+      "articles": "500+",
+      "readers": "100,000+",
+      "countries": "150+",
+      "downloads": "50,000+"
+    },
+    "history": {
+      "founded": "2020",
+      "milestones": [
+        {"year": "2020", "event": "Finance ISL founded with the goal of making Islamic finance education accessible globally."},
+        {"year": "2021", "event": "Launched comprehensive Islamic finance glossary with 500+ terms."},
+        {"year": "2022", "event": "Reached 50,000 monthly readers milestone."},
+        {"year": "2023", "event": "Introduced downloadable resources and learning materials."},
+        {"year": "2024", "event": "Expanded to cover business management and ethics alongside Islamic finance."},
+        {"year": "2025", "event": "Launched interactive learning tools and case studies."},
+        {"year": "2026", "event": "Redesigned platform with enhanced user experience and PWA support."}
+      ]
+    },
+    "contact": {
+      "email": "abdulrahamanraye68@gmail.com",
+      "social": {
+        "twitter": "https://twitter.com/financeisl",
+        "facebook": "https://facebook.com/financeisl",
+        "linkedin": "https://linkedin.com/company/financeisl",
+        "instagram": "https://instagram.com/financeisl",
+        "youtube": "https://youtube.com/@financeisl"
+      }
+    },
+    "partners": [
+      {
+        "name": "AAOIFI",
+        "description": "Accounting and Auditing Organization for Islamic Financial Institutions",
+        "logo": "images/partners/aaoifi.png"
+      },
+      {
+        "name": "ISRA",
+        "description": "International Sharia Research Academy for Islamic Finance",
+        "logo": "images/partners/isra.png"
+      },
+      {
+        "name": "INCEIF",
+        "description": "International Centre for Education in Islamic Finance",
+        "logo": "images/partners/inceif.png"
+      }
+    ]
+  }
+}

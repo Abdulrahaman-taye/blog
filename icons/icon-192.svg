@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" fill="none">
+  <rect width="192" height="192" rx="40" fill="#1a5632"/>
+  <path d="M56 48C56 48 96 28 112 48C128 68 112 88 112 88C112 88 128 108 112 128C96 148 56 128 56 128C56 128 40 108 56 88C72 68 56 48 56 48Z" fill="#d4af37"/>
+  <circle cx="84" cy="78" r="10" fill="#1a5632"/>
+  <text x="48" y="172" font-family="Arial, sans-serif" font-size="32" font-weight="bold" fill="white">Finance ISL</text>
+</svg>

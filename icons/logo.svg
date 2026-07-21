@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <rect width="200" height="60" rx="10" fill="#1a5632"/>
+  <path d="M15 15C15 15 25 10 30 15C35 20 30 25 30 25C30 25 35 30 30 35C25 40 15 35 15 35C15 35 10 30 15 25C20 20 15 15 15 15Z" fill="#d4af37"/>
+  <circle cx="22.5" cy="22.5" r="3" fill="#1a5632"/>
+  <text x="45" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white">Finance</text>
+  <text x="135" y="38" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#d4af37">ISL</text>
+</svg>

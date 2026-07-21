@@ -1,0 +1,706 @@
+{
+  "posts": [
+    {
+      "id": "understanding-murabaha",
+      "title": "Understanding Murabaha: The Foundation of Islamic Trade Finance",
+      "excerpt": "Murabaha is one of the most widely used Islamic financing structures. Learn how this cost-plus financing model works and why it's Sharia-compliant.",
+      "category": "islamic-finance",
+      "subtopic": "murabaha",
+      "author": "ahmad-hassan",
+      "publishedDate": "2026-07-15",
+      "tags": [
+        "murabaha",
+        "trade-finance",
+        "sharia-compliant",
+        "banking"
+      ],
+      "featuredImage": {
+        "src": "images/posts/murabaha.jpg",
+        "alt": "Murabaha Islamic Finance Concept",
+        "caption": "Understanding the Murabaha financing structure"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Murabaha, also known as cost-plus financing, is one of the most fundamental and widely used Islamic financial instruments. Unlike conventional interest-based lending, Murabaha operates on the principle of transparent trade where the seller discloses the actual cost of the asset and adds a known profit margin."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What is Murabaha?"
+        },
+        {
+          "type": "paragraph",
+          "text": "In Arabic, Murabaha literally means 'profit' or 'mark-up.' In Islamic finance, it refers to a specific type of sale where the seller clearly states the cost of the commodity and the profit margin added to it. The buyer knows exactly what they're paying for and why."
+        },
+        {
+          "type": "quote",
+          "text": "The Prophet Muhammad (peace be upon him) said: 'The truthful and trustworthy merchant will be with the Prophets, the truthful, and the martyrs.'",
+          "source": "Tirmidhi"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "How Murabaha Works"
+        },
+        {
+          "type": "list",
+          "style": "ordered",
+          "items": [
+            "The customer identifies the asset they wish to purchase",
+            "The Islamic bank purchases the asset on behalf of the customer",
+            "The bank sells the asset to the customer at cost plus a disclosed profit margin",
+            "The customer pays in installments or lump sum",
+            "Ownership transfers to the customer upon completion of payment"
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Key Conditions for Valid Murabaha"
+        },
+        {
+          "type": "paragraph",
+          "text": "For a Murabaha transaction to be Sharia-compliant, several conditions must be met:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "The cost price must be honestly disclosed",
+            "The profit margin must be agreed upon upfront",
+            "The asset must exist and be owned by the bank at the time of sale",
+            "The sale must be immediate (not deferred)",
+            "The quality and quantity must be clearly specified"
+          ]
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Feature",
+            "Murabaha",
+            "Conventional Loan"
+          ],
+          "rows": [
+            [
+              "Nature",
+              "Sale Transaction",
+              "Lending Transaction"
+            ],
+            [
+              "Interest",
+              "No (uses profit margin)",
+              "Yes (interest charged)"
+            ],
+            [
+              "Asset",
+              "Must exist",
+              "Not required"
+            ],
+            [
+              "Risk",
+              "Shared",
+              "Borne by borrower"
+            ],
+            [
+              "Transparency",
+              "Full disclosure",
+              "May vary"
+            ]
+          ],
+          "caption": "Comparison between Murabaha and Conventional Loans"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Applications of Murabaha"
+        },
+        {
+          "type": "paragraph",
+          "text": "Murabaha is commonly used for home financing, vehicle purchases, trade financing, working capital facilities, and import/export financing."
+        },
+        {
+          "type": "callout",
+          "style": "info",
+          "title": "Did You Know?",
+          "text": "Murabaha accounts for over 70% of Islamic banking transactions in many Muslim-majority countries."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Conclusion"
+        },
+        {
+          "type": "paragraph",
+          "text": "Murabaha represents a cornerstone of Islamic finance, offering a Sharia-compliant alternative to conventional lending. Its emphasis on transparency, real asset ownership, and fair dealing aligns with both Islamic principles and modern ethical finance standards."
+        }
+      ],
+      "relatedPosts": [
+        "mudarabah-explained",
+        "islamic-banking-101"
+      ]
+    },
+    {
+      "id": "mudarabah-explained",
+      "title": "Mudarabah: The Partnership Model in Islamic Finance",
+      "excerpt": "Discover how Mudarabah creates equitable partnerships between capital providers and entrepreneurs in Islamic finance.",
+      "category": "islamic-finance",
+      "subtopic": "mudarabah",
+      "author": "fatima-al-rashid",
+      "publishedDate": "2026-07-10",
+      "tags": [
+        "mudarabah",
+        "partnership",
+        "profit-sharing",
+        "investment"
+      ],
+      "featuredImage": {
+        "src": "images/posts/mudarabah.jpg",
+        "alt": "Mudarabah Partnership Model",
+        "caption": "The Mudarabah partnership structure"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Mudarabah is a form of business partnership in Islamic finance where one party provides the capital while the other provides expertise and management. This unique structure ensures that both parties share in the profits while losses are borne only by the capital provider unless the manager was negligent."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Understanding Mudarabah"
+        },
+        {
+          "type": "paragraph",
+          "text": "The term Mudarabah comes from the Arabic word 'darb' meaning to travel or to strike the earth. Historically, it referred to trading journeys where merchants would finance traders to conduct business on their behalf."
+        },
+        {
+          "type": "heading",
+          "level": 3,
+          "text": "Parties Involved"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Rabb al-Mal: The capital provider/investor",
+            "Mudarib: The entrepreneur/manager",
+            "Both parties agree on profit-sharing ratio upfront"
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "In Mudarabah, the investor provides the funds and the entrepreneur provides the effort. Profits are shared according to a pre-agreed ratio, while financial losses are borne solely by the investor.",
+          "source": "AAOIFI Shariah Standards"
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Types of Mudarabah"
+        },
+        {
+          "type": "table",
+          "headers": [
+            "Type",
+            "Description",
+            "Duration"
+          ],
+          "rows": [
+            [
+              "Restricted Mudarabah",
+              "Capital restricted to specific trade",
+              "Fixed term"
+            ],
+            [
+              "Unrestricted Mudarabah",
+              "Mudarib has full discretion",
+              "Open-ended"
+            ]
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Applications in Modern Islamic Banking"
+        },
+        {
+          "type": "paragraph",
+          "text": "Mudarabah is the backbone of Islamic investment and savings products including investment accounts, mutual funds, venture capital, project financing, and working capital partnerships."
+        }
+      ],
+      "relatedPosts": [
+        "understanding-murabaha",
+        "islamic-banking-101"
+      ]
+    },
+    {
+      "id": "zakat-calculator-guide",
+      "title": "Complete Guide to Zakat: Calculation, Distribution, and Spiritual Significance",
+      "excerpt": "A comprehensive guide to understanding and calculating Zakat, one of the Five Pillars of Islam and a cornerstone of Islamic economics.",
+      "category": "islamic-finance",
+      "subtopic": "zakat",
+      "author": "abdullah-ibrahim",
+      "publishedDate": "2026-07-05",
+      "tags": [
+        "zakat",
+        "charity",
+        "five-pillars",
+        "obligation"
+      ],
+      "featuredImage": {
+        "src": "images/posts/zakat.jpg",
+        "alt": "Zakat Distribution",
+        "caption": "Understanding Zakat obligations"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Zakat is the third pillar of Islam and represents one of the most important financial obligations for Muslims. It is a mandatory charitable contribution, typically calculated at 2.5% of one's qualifying wealth, that serves to purify wealth and support those in need."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What is Zakat?"
+        },
+        {
+          "type": "paragraph",
+          "text": "The word Zakat comes from the Arabic root 'z-k-w' meaning purification and growth. It is both a spiritual act of worship and a practical mechanism for wealth redistribution in Islamic society."
+        },
+        {
+          "type": "callout",
+          "style": "warning",
+          "title": "Important Note",
+          "text": "Zakat is obligatory on every Muslim who possesses wealth above the Nisab threshold for one lunar year."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Zakat Eligible Wealth"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Gold and silver",
+            "Cash and bank deposits",
+            "Stocks and investments",
+            "Business inventory",
+            "Rental income",
+            "Agricultural produce"
+          ]
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Zakat Recipients (Asnaf)"
+        },
+        {
+          "type": "paragraph",
+          "text": "The Quran (9:60) specifies eight categories of people who are eligible to receive Zakat:"
+        },
+        {
+          "type": "list",
+          "style": "ordered",
+          "items": [
+            "Al-Fuqara (The Poor)",
+            "Al-Masakin (The Needy)",
+            "Zakat Administrators",
+            "Those whose hearts are to be reconciled",
+            "Those in bondage (slaves/captives)",
+            "Those in debt",
+            "In the cause of Allah",
+            "The wayfarer (traveler in need)"
+          ]
+        }
+      ],
+      "relatedPosts": [
+        "waqf-guide",
+        "beginner-guide-islamic-finance"
+      ]
+    },
+    {
+      "id": "islamic-banking-101",
+      "title": "Islamic Banking 101: Principles, Products, and Practices",
+      "excerpt": "A beginner's guide to understanding how Islamic banking works and its fundamental principles that distinguish it from conventional banking.",
+      "category": "islamic-finance",
+      "subtopic": "islamic-banking",
+      "author": "yusuf-patel",
+      "publishedDate": "2026-06-28",
+      "tags": [
+        "islamic-banking",
+        "principles",
+        "beginner",
+        "overview"
+      ],
+      "featuredImage": {
+        "src": "images/posts/banking.jpg",
+        "alt": "Islamic Banking Principles",
+        "caption": "Fundamentals of Islamic Banking"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Islamic banking is a financial system that operates in accordance with Sharia (Islamic law). It is built on principles of fairness, transparency, and risk-sharing, offering an ethical alternative to conventional interest-based banking."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Core Principles"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Prohibition of Riba (Interest)",
+            "Prohibition of Gharar (Excessive Uncertainty)",
+            "Prohibition of Maysir (Gambling)",
+            "Asset-backed Financing",
+            "Risk Sharing",
+            "Ethical Investment Screening"
+          ]
+        }
+      ],
+      "relatedPosts": [
+        "understanding-murabaha",
+        "mudarabah-explained"
+      ]
+    },
+    {
+      "id": "leadership-islamic-perspective",
+      "title": "Leadership from an Islamic Perspective: Principles for Modern Business",
+      "excerpt": "Explore timeless leadership principles from Islamic teachings that can transform modern business management and organizational success.",
+      "category": "business-management",
+      "subtopic": "leadership",
+      "author": "aisha-mohammed",
+      "publishedDate": "2026-07-12",
+      "tags": [
+        "leadership",
+        "management",
+        "islamic-values",
+        "business"
+      ],
+      "featuredImage": {
+        "src": "images/posts/leadership.jpg",
+        "alt": "Islamic Leadership Principles",
+        "caption": "Leadership in Islamic Business Context"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Islamic leadership is rooted in the concept of Khilafah (trusteeship), where leaders are viewed as stewards responsible for the welfare of those they lead. This approach emphasizes servant leadership, consultation (Shura), and accountability."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Key Leadership Qualities in Islam"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Amanah (Trustworthiness)",
+            "Adl (Justice)",
+            "Shura (Consultation)",
+            "Ihsan (Excellence)",
+            "Sabr (Patience)",
+            "Rahmah (Mercy)"
+          ]
+        },
+        {
+          "type": "quote",
+          "text": "Each of you is a shepherd and each of you is responsible for his flock.",
+          "source": "Prophet Muhammad (PBUH) - Sahih Bukhari"
+        }
+      ],
+      "relatedPosts": [
+        "ethics-in-business",
+        "corporate-governance-guide"
+      ]
+    },
+    {
+      "id": "takaful-guide",
+      "title": "Takaful: Islamic Insurance Explained",
+      "excerpt": "Learn how Takaful provides cooperative insurance based on mutual assistance and shared responsibility in Islam.",
+      "category": "islamic-finance",
+      "subtopic": "takaful",
+      "author": "hassan-ali",
+      "publishedDate": "2026-06-20",
+      "tags": [
+        "takaful",
+        "insurance",
+        "cooperative",
+        "protection"
+      ],
+      "featuredImage": {
+        "src": "images/posts/takaful.jpg",
+        "alt": "Takaful Islamic Insurance",
+        "caption": "Understanding Takaful cooperative insurance"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Takaful is an Islamic insurance system founded on the principles of mutual assistance (Ta'awun) and shared responsibility. It provides a Sharia-compliant alternative to conventional insurance by eliminating elements of uncertainty (Gharar), gambling (Maysir), and interest (Riba)."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "How Takaful Works"
+        },
+        {
+          "type": "paragraph",
+          "text": "In a Takaful arrangement, participants contribute to a shared pool of funds. These contributions are considered donations (Tabarru) to help those who suffer losses. The Takaful operator manages the fund on behalf of participants."
+        }
+      ],
+      "relatedPosts": [
+        "islamic-banking-101",
+        "understanding-murabaha"
+      ]
+    },
+    {
+      "id": "sukuk-explained",
+      "title": "Sukuk: Islamic Bonds and Capital Markets",
+      "excerpt": "Understand how Sukuk provides Sharia-compliant alternatives to conventional bonds in global capital markets.",
+      "category": "islamic-finance",
+      "subtopic": "sukuk",
+      "author": "omar-khalil",
+      "publishedDate": "2026-06-15",
+      "tags": [
+        "sukuk",
+        "bonds",
+        "capital-markets",
+        "investment"
+      ],
+      "featuredImage": {
+        "src": "images/posts/sukuk.jpg",
+        "alt": "Sukuk Islamic Bonds",
+        "caption": "Understanding Sukuk capital market instruments"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Sukuk (Islamic bonds) are certificates of equal value representing undivided ownership shares in tangible assets, usufruct, or services. Unlike conventional bonds that represent debt obligations, Sukuk represent ownership in real assets."
+        }
+      ],
+      "relatedPosts": [
+        "islamic-banking-101",
+        "understanding-murabaha"
+      ]
+    },
+    {
+      "id": "waqf-guide",
+      "title": "Waqf: The Islamic Endowment System",
+      "excerpt": "Explore the concept of Waqf and its role in sustainable community development and social welfare in Islam.",
+      "category": "islamic-finance",
+      "subtopic": "waqf",
+      "author": "khadija-osman",
+      "publishedDate": "2026-06-10",
+      "tags": [
+        "waqf",
+        "endowment",
+        "community",
+        "social-finance"
+      ],
+      "featuredImage": {
+        "src": "images/posts/waqf.jpg",
+        "alt": "Waqf Endowment",
+        "caption": "The Waqf endowment system"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Waqf is an Islamic endowment where property or assets are donated for charitable purposes. The donated asset is held in trust and cannot be sold, inherited, or donated. The usufruct (benefit) of the asset is used for specified charitable purposes."
+        }
+      ],
+      "relatedPosts": [
+        "zakat-calculator-guide",
+        "beginner-guide-islamic-finance"
+      ]
+    },
+    {
+      "id": "ethics-in-business",
+      "title": "Ethical Business Practices in Islam",
+      "excerpt": "Discover how Islamic ethical principles shape business conduct and create sustainable, responsible enterprises.",
+      "category": "ethics",
+      "subtopic": "business-ethics",
+      "author": "aisha-mohammed",
+      "publishedDate": "2026-07-08",
+      "tags": [
+        "ethics",
+        "business",
+        "values",
+        "conduct"
+      ],
+      "featuredImage": {
+        "src": "images/posts/ethics.jpg",
+        "alt": "Business Ethics in Islam",
+        "caption": "Ethical principles in Islamic business"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Islam provides a comprehensive ethical framework for business conduct that emphasizes honesty, fairness, and social responsibility. These principles are not merely guidelines but religious obligations that shape every aspect of commercial activity."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "Foundational Ethical Principles"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "Honesty (Sidq) in all transactions",
+            "Fulfilling promises and contracts (Wafa bil-Ahd)",
+            "Avoiding fraud and deception (Ghashsh)",
+            "Fair pricing and measures",
+            "Transparency and disclosure",
+            "Respecting the rights of others"
+          ]
+        }
+      ],
+      "relatedPosts": [
+        "leadership-islamic-perspective",
+        "corporate-governance-guide"
+      ]
+    },
+    {
+      "id": "beginner-guide-islamic-finance",
+      "title": "Islamic Finance for Beginners: A Complete Introduction",
+      "excerpt": "New to Islamic finance? This comprehensive beginner's guide covers all the basics you need to understand Sharia-compliant financial systems.",
+      "category": "learning-resources",
+      "subtopic": "beginner-guides",
+      "author": "finance-isl-team",
+      "publishedDate": "2026-06-01",
+      "tags": [
+        "beginner",
+        "introduction",
+        "guide",
+        "basics"
+      ],
+      "featuredImage": {
+        "src": "images/posts/beginner-guide.jpg",
+        "alt": "Islamic Finance Beginner Guide",
+        "caption": "Your complete introduction to Islamic finance"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Welcome to the world of Islamic finance! Whether you are a student, professional, or simply curious about ethical financial systems, this guide will walk you through the fundamental concepts, principles, and practices of Islamic finance."
+        },
+        {
+          "type": "heading",
+          "level": 2,
+          "text": "What Makes Islamic Finance Different?"
+        },
+        {
+          "type": "paragraph",
+          "text": "Islamic finance is a system of financial services that complies with Islamic law (Sharia). It differs from conventional finance in several key ways:"
+        },
+        {
+          "type": "list",
+          "style": "unordered",
+          "items": [
+            "No interest (Riba) - Profit is earned through trade and investment, not lending",
+            "Real asset backing - Transactions must involve tangible assets or services",
+            "Risk sharing - Both parties share the risks and rewards",
+            "Ethical screening - Investments must align with Islamic values",
+            "No excessive uncertainty - Terms must be clear and transparent"
+          ]
+        }
+      ],
+      "relatedPosts": [
+        "islamic-banking-101",
+        "understanding-murabaha"
+      ]
+    },
+    {
+      "id": "corporate-governance-guide",
+      "title": "Corporate Governance in Islamic Organizations",
+      "excerpt": "Learn about Sharia-compliant corporate governance frameworks that ensure accountability, transparency, and ethical leadership.",
+      "category": "ethics",
+      "subtopic": "corporate-governance",
+      "author": "ibrahim-suleiman",
+      "publishedDate": "2026-06-25",
+      "tags": [
+        "governance",
+        "accountability",
+        "transparency",
+        "organizations"
+      ],
+      "featuredImage": {
+        "src": "images/posts/governance.jpg",
+        "alt": "Islamic Corporate Governance",
+        "caption": "Corporate governance in Islamic organizations"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Islamic corporate governance is built on the concept of Khilafah (trusteeship) and emphasizes accountability to both shareholders and stakeholders. It incorporates Sharia supervisory boards and ensures that business operations align with Islamic principles."
+        }
+      ],
+      "relatedPosts": [
+        "ethics-in-business",
+        "leadership-islamic-perspective"
+      ]
+    },
+    {
+      "id": "social-responsibility-guide",
+      "title": "Social Responsibility in Islamic Business",
+      "excerpt": "Explore how Islamic teachings inspire comprehensive social responsibility that goes beyond conventional CSR frameworks.",
+      "category": "ethics",
+      "subtopic": "social-responsibility",
+      "author": "maryam-ibrahim",
+      "publishedDate": "2026-06-18",
+      "tags": [
+        "csr",
+        "social-responsibility",
+        "community",
+        "impact"
+      ],
+      "featuredImage": {
+        "src": "images/posts/csr.jpg",
+        "alt": "Islamic Social Responsibility",
+        "caption": "Social responsibility in Islamic business"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "Social responsibility in Islam is not a voluntary addition to business practice but an integral part of the faith. The concept of Fard Kifayah (communal obligation) extends to ensuring that business activities contribute positively to society."
+        }
+      ],
+      "relatedPosts": [
+        "ethics-in-business",
+        "waqf-guide"
+      ]
+    },
+    {
+      "id": "marketing-halal",
+      "title": "Halal Marketing Strategies for Modern Businesses",
+      "excerpt": "Learn effective marketing strategies that respect Islamic values while reaching the growing global Muslim consumer market.",
+      "category": "business-management",
+      "subtopic": "marketing",
+      "author": "sarah-abdullah",
+      "publishedDate": "2026-07-01",
+      "tags": [
+        "marketing",
+        "halal",
+        "consumer",
+        "strategy"
+      ],
+      "featuredImage": {
+        "src": "images/posts/marketing.jpg",
+        "alt": "Halal Marketing",
+        "caption": "Halal marketing strategies"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "text": "The global halal market is projected to reach $7.7 trillion by 2025, making halal marketing not just an ethical choice but a strategic business opportunity. Understanding how to authentically market to Muslim consumers while respecting Islamic principles is essential for modern businesses."
+        }
+      ],
+      "relatedPosts": [
+        "ethics-in-business",
+        "leadership-islamic-perspective"
+      ]
+    }
+  ]
+}

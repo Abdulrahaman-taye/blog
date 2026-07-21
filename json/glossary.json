@@ -1,0 +1,196 @@
+{
+  "glossary": [
+    {
+      "term": "Amanah",
+      "arabic": "أمانة",
+      "pronunciation": "ah-mah-nah",
+      "definition": "Trust or something entrusted to one's care. In Islamic finance, it refers to the concept that wealth and resources are held in trust from Allah, and must be managed responsibly.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Khilafah", "Wakalah"]
+    },
+    {
+      "term": "Bay' al-'Inah",
+      "arabic": "بيع العينة",
+      "pronunciation": "bah-yah al-ee-nah",
+      "definition": "A sale contract where the seller sells an asset to the buyer on deferred payment, then buys it back at a lower cash price. This is controversial and considered impermissible by many scholars as it resembles interest-based lending.",
+      "category": "Sale Contracts",
+      "relatedTerms": ["Murabaha", "Tawarruq"]
+    },
+    {
+      "term": "Falah",
+      "arabic": "فلاح",
+      "pronunciation": "fa-lah",
+      "definition": "Success and prosperity in both this world and the hereafter. Islamic economics aims to achieve Falah for individuals and society.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Maqasid al-Shariah", "Maslahah"]
+    },
+    {
+      "term": "Gharar",
+      "arabic": "غرر",
+      "pronunciation": "gha-rar",
+      "definition": "Excessive uncertainty or ambiguity in a contract. Islamic finance prohibits transactions with excessive Gharar to ensure fairness and transparency. Minor Gharar that doesn't affect the contract is tolerable.",
+      "category": "Prohibitions",
+      "relatedTerms": ["Maysir", "Riba"]
+    },
+    {
+      "term": "Halal",
+      "arabic": "حلال",
+      "pronunciation": "ha-lal",
+      "definition": "Permissible or lawful according to Islamic law. In finance, it refers to investments, products, and activities that comply with Sharia principles.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Haram", "Sharia"]
+    },
+    {
+      "term": "Haram",
+      "arabic": "حرام",
+      "pronunciation": "ha-ram",
+      "definition": "Prohibited or unlawful according to Islamic law. In finance, it includes interest (Riba), gambling (Maysir), and investments in prohibited industries (alcohol, pork, etc.).",
+      "category": "Core Concepts",
+      "relatedTerms": ["Halal", "Sharia"]
+    },
+    {
+      "term": "Ijarah",
+      "arabic": "إجارة",
+      "pronunciation": "ee-ja-rah",
+      "definition": "Leasing or hiring contract where the owner transfers the usufruct (right to use) of an asset to another person for a specified period and rental payment. Common in Islamic banking for equipment and vehicle financing.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Ijarah wa Iqtina", "Murabaha"]
+    },
+    {
+      "term": "Ijarah wa Iqtina",
+      "arabic": "إجارة واقتناء",
+      "pronunciation": "ee-ja-rah wa iq-tee-na",
+      "definition": "A lease agreement with an option to purchase. The lessee pays rent and eventually acquires ownership of the asset, similar to a lease-to-own arrangement.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Ijarah", "Murabaha"]
+    },
+    {
+      "term": "Istihsan",
+      "arabic": "استحسان",
+      "pronunciation": "is-tih-san",
+      "definition": "Juristic preference or equity. A method of Islamic jurisprudence where a jurist departs from a stricter ruling to a more equitable one based on stronger evidence or public interest.",
+      "category": "Jurisprudence",
+      "relatedTerms": ["Maslahah", "Maqasid al-Shariah"]
+    },
+    {
+      "term": "Khilafah",
+      "arabic": "خلافة",
+      "pronunciation": "khi-la-fah",
+      "definition": "Trusteeship or vicegerency. The concept that humans are stewards of Allah's creation and will be accountable for how they manage resources and responsibilities.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Amanah", "Maqasid al-Shariah"]
+    },
+    {
+      "term": "Maqasid al-Shariah",
+      "arabic": "مقاصد الشريعة",
+      "pronunciation": "ma-ka-sid ash-sha-ree-ah",
+      "definition": "The objectives or goals of Islamic law. These include protection of faith (Din), life (Nasl), intellect (Aql), wealth (Mal), and dignity (Ird). Islamic finance aims to serve these objectives.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Maslahah", "Sharia"]
+    },
+    {
+      "term": "Maslahah",
+      "arabic": "مصلحة",
+      "pronunciation": "mas-la-hah",
+      "definition": "Public interest or welfare. A principle in Islamic jurisprudence that considers the broader benefit to society when formulating rules and policies.",
+      "category": "Jurisprudence",
+      "relatedTerms": ["Maqasid al-Shariah", "Istihsan"]
+    },
+    {
+      "term": "Maysir",
+      "arabic": "ميسر",
+      "pronunciation": "may-sir",
+      "definition": "Gambling or games of chance. Prohibited in Islam because it involves gaining wealth through chance rather than productive effort, creating wealth redistribution without real economic activity.",
+      "category": "Prohibitions",
+      "relatedTerms": ["Gharar", "Riba"]
+    },
+    {
+      "term": "Mudarabah",
+      "arabic": "مضاربة",
+      "pronunciation": "mu-da-ra-bah",
+      "definition": "A partnership contract where one partner provides capital (Rabb al-Mal) and the other provides labor and management (Mudarib). Profits are shared according to a pre-agreed ratio, while losses are borne by the capital provider unless due to negligence.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Musharakah", "Wakalah"]
+    },
+    {
+      "term": "Murabaha",
+      "arabic": "مرابحة",
+      "pronunciation": "mu-ra-ba-hah",
+      "definition": "Cost-plus financing where the seller discloses the actual cost of an asset and adds a known profit margin. The buyer pays in installments or lump sum. It's the most common mode of Islamic financing.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Bay' al-'Inah", "Tawarruq"]
+    },
+    {
+      "term": "Musharakah",
+      "arabic": "مشاركة",
+      "pronunciation": "mu-sha-ra-kah",
+      "definition": "A partnership where all partners contribute capital and may share in management. Profits are distributed according to an agreed ratio, while losses are shared in proportion to capital contribution.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Mudarabah", "Diminishing Musharakah"]
+    },
+    {
+      "term": "Qard Hasan",
+      "arabic": "قرض حسن",
+      "pronunciation": "qard ha-san",
+      "definition": "A benevolent or interest-free loan. The borrower is only required to return the principal amount. It is considered a charitable act and highly rewarded in Islam.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Sadaqah", "Zakat"]
+    },
+    {
+      "term": "Riba",
+      "arabic": "ربا",
+      "pronunciation": "ri-ba",
+      "definition": "Interest or usury. Any predetermined, fixed return on a loan regardless of the borrower's profit or loss. It is strictly prohibited in Islam as it is considered unjust and exploitative.",
+      "category": "Prohibitions",
+      "relatedTerms": ["Gharar", "Maysir"]
+    },
+    {
+      "term": "Sharia",
+      "arabic": "شريعة",
+      "pronunciation": "sha-ree-ah",
+      "definition": "Islamic law derived from the Quran, Sunnah (traditions of Prophet Muhammad), Ijma (scholarly consensus), and Qiyas (analogical reasoning). It governs all aspects of Muslim life including financial transactions.",
+      "category": "Core Concepts",
+      "relatedTerms": ["Maqasid al-Shariah", "Fiqh"]
+    },
+    {
+      "term": "Sukuk",
+      "arabic": "صكوك",
+      "pronunciation": "su-kuk",
+      "definition": "Islamic financial certificates representing undivided ownership shares in tangible assets, usufruct, or services. Often called Islamic bonds, they differ from conventional bonds as they represent ownership rather than debt.",
+      "category": "Investment",
+      "relatedTerms": ["Ijarah Sukuk", "Musharakah Sukuk"]
+    },
+    {
+      "term": "Takaful",
+      "arabic": "تأمين تكافلي",
+      "pronunciation": "ta-ka-ful",
+      "definition": "Islamic cooperative insurance based on mutual assistance. Participants contribute to a shared fund as donations. Claims are paid from the pool, and surpluses may be distributed among participants.",
+      "category": "Insurance",
+      "relatedTerms": ["Tabarru", "Wakalah"]
+    },
+    {
+      "term": "Tawarruq",
+      "arabic": "تورق",
+      "pronunciation": "ta-war-ruq",
+      "definition": "The practice of purchasing an asset on credit and selling it to a third party for cash to obtain liquidity. It is considered permissible by most scholars as it involves real buying and selling.",
+      "category": "Financing Modes",
+      "relatedTerms": ["Murabaha", "Bay' al-'Inah"]
+    },
+    {
+      "term": "Waqf",
+      "arabic": "وقف",
+      "pronunciation": "waqf",
+      "definition": "An Islamic endowment where property or assets are permanently dedicated for charitable purposes. The asset cannot be sold, inherited, or donated, and its usufruct is used for specified purposes.",
+      "category": "Social Finance",
+      "relatedTerms": ["Sadaqah", "Zakat"]
+    },
+    {
+      "term": "Zakat",
+      "arabic": "زكاة",
+      "pronunciation": "za-kat",
+      "definition": "Obligatory charity, one of the Five Pillars of Islam. Muslims must give 2.5% of their qualifying wealth annually to eligible recipients. It purifies wealth and helps those in need.",
+      "category": "Social Finance",
+      "relatedTerms": ["Sadaqah", "Nisab"]
+    }
+  ]
+}

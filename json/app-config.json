@@ -1,0 +1,88 @@
+{
+  "app": {
+    "name": "Finance ISL",
+    "version": "1.0.0",
+    "description": "Comprehensive Islamic Finance Blog Platform",
+    "author": "Finance ISL Team",
+    "email": "abdulrahamanraye68@gmail.com",
+    "website": "https://financeisl.com",
+    "logo": "icons/logo.svg",
+    "favicon": "icons/favicon.svg",
+    "language": "en",
+    "direction": "ltr",
+    "copyright": "© 2026 Finance ISL. All rights reserved.",
+    "web3formsAccessKey": "6f362247-076e-4afd-b029-edbaaedf071b",
+    "social": {
+      "twitter": "#",
+      "facebook": "#",
+      "linkedin": "#",
+      "instagram": "#"
+    }
+  },
+  "themes": {
+    "light": {
+      "name": "Light",
+      "primary": "#1a5632",
+      "secondary": "#2d8a56",
+      "accent": "#d4af37",
+      "background": "#ffffff",
+      "surface": "#f8f9fa",
+      "text": "#1a1a1a",
+      "textSecondary": "#666666",
+      "border": "#e0e0e0",
+      "shadow": "rgba(0,0,0,0.1)",
+      "success": "#28a745",
+      "warning": "#ffc107",
+      "error": "#dc3545",
+      "info": "#17a2b8"
+    },
+    "dark": {
+      "name": "Dark",
+      "primary": "#2d8a56",
+      "secondary": "#4ade80",
+      "accent": "#fbbf24",
+      "background": "#0f172a",
+      "surface": "#1e293b",
+      "text": "#f1f5f9",
+      "textSecondary": "#94a3b8",
+      "border": "#334155",
+      "shadow": "rgba(0,0,0,0.3)",
+      "success": "#4ade80",
+      "warning": "#fbbf24",
+      "error": "#f87171",
+      "info": "#38bdf8"
+    },
+    "green": {
+      "name": "Emerald",
+      "primary": "#065f46",
+      "secondary": "#059669",
+      "accent": "#d97706",
+      "background": "#ecfdf5",
+      "surface": "#d1fae5",
+      "text": "#064e3b",
+      "textSecondary": "#047857",
+      "border": "#a7f3d0",
+      "shadow": "rgba(6,95,70,0.1)",
+      "success": "#10b981",
+      "warning": "#f59e0b",
+      "error": "#ef4444",
+      "info": "#06b6d4"
+    },
+    "gold": {
+      "name": "Golden",
+      "primary": "#92400e",
+      "secondary": "#b45309",
+      "accent": "#1a5632",
+      "background": "#fffbeb",
+      "surface": "#fef3c7",
+      "text": "#78350f",
+      "textSecondary": "#92400e",
+      "border": "#fde68a",
+      "shadow": "rgba(146,64,14,0.1)",
+      "success": "#84cc16",
+      "warning": "#eab308",
+      "error": "#dc2626",
+      "info": "#2563eb"
+    }
+  }
+}

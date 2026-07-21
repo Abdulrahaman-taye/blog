@@ -1,0 +1,100 @@
+{
+  "authors": [
+    {
+      "id": "ahmad-hassan",
+      "name": "Dr. Ahmad Hassan",
+      "avatar": "images/authors/ahmad.jpg",
+      "bio": "Islamic Finance Scholar with 20+ years of experience in Sharia-compliant banking and trade finance.",
+      "role": "Chief Editor",
+      "specialization": "Islamic Banking & Finance"
+    },
+    {
+      "id": "fatima-al-rashid",
+      "name": "Dr. Fatima Al-Rashid",
+      "avatar": "images/authors/fatima.jpg",
+      "bio": "Professor of Islamic Economics specializing in partnership-based financing models.",
+      "role": "Senior Researcher",
+      "specialization": "Islamic Economics"
+    },
+    {
+      "id": "abdullah-ibrahim",
+      "name": "Sheikh Abdullah Ibrahim",
+      "avatar": "images/authors/abdullah.jpg",
+      "bio": "Qualified Islamic Jurist and Financial Advisor with expertise in Zakat and wealth management.",
+      "role": "Sharia Advisor",
+      "specialization": "Islamic Jurisprudence"
+    },
+    {
+      "id": "yusuf-patel",
+      "name": "Prof. Yusuf Patel",
+      "avatar": "images/authors/yusuf.jpg",
+      "bio": "Banking and Finance Expert with focus on Islamic banking products and regulation.",
+      "role": "Contributing Writer",
+      "specialization": "Banking & Finance"
+    },
+    {
+      "id": "aisha-mohammed",
+      "name": "Dr. Aisha Mohammed",
+      "avatar": "images/authors/aisha.jpg",
+      "bio": "Leadership Consultant and Islamic Scholar bridging traditional wisdom with modern management.",
+      "role": "Contributing Writer",
+      "specialization": "Leadership & Ethics"
+    },
+    {
+      "id": "hassan-ali",
+      "name": "Dr. Hassan Ali",
+      "avatar": "images/authors/hassan.jpg",
+      "bio": "Takaful Industry Expert with 15 years in cooperative insurance and risk management.",
+      "role": "Contributing Writer",
+      "specialization": "Takaful & Insurance"
+    },
+    {
+      "id": "omar-khalil",
+      "name": "Dr. Omar Khalil",
+      "avatar": "images/authors/omar.jpg",
+      "bio": "Capital Markets Specialist focusing on Sukuk structures and Islamic securities.",
+      "role": "Contributing Writer",
+      "specialization": "Capital Markets"
+    },
+    {
+      "id": "khadija-osman",
+      "name": "Dr. Khadija Osman",
+      "avatar": "images/authors/khadija.jpg",
+      "bio": "Islamic Social Finance Researcher specializing in Waqf and community development.",
+      "role": "Contributing Writer",
+      "specialization": "Social Finance"
+    },
+    {
+      "id": "ibrahim-suleiman",
+      "name": "Dr. Ibrahim Suleiman",
+      "avatar": "images/authors/ibrahim.jpg",
+      "bio": "Corporate Governance Specialist with expertise in Sharia-compliant governance frameworks.",
+      "role": "Contributing Writer",
+      "specialization": "Corporate Governance"
+    },
+    {
+      "id": "maryam-ibrahim",
+      "name": "Dr. Maryam Ibrahim",
+      "avatar": "images/authors/maryam.jpg",
+      "bio": "CSR and Sustainability Expert focusing on Islamic approaches to social responsibility.",
+      "role": "Contributing Writer",
+      "specialization": "CSR & Sustainability"
+    },
+    {
+      "id": "sarah-abdullah",
+      "name": "Sarah Abdullah",
+      "avatar": "images/authors/sarah.jpg",
+      "bio": "Halal Marketing Consultant helping brands connect authentically with Muslim consumers.",
+      "role": "Contributing Writer",
+      "specialization": "Halal Marketing"
+    },
+    {
+      "id": "finance-isl-team",
+      "name": "Finance ISL Team",
+      "avatar": "images/authors/team.jpg",
+      "bio": "The editorial team behind Finance ISL, dedicated to making Islamic finance accessible to all.",
+      "role": "Editorial Team",
+      "specialization": "Islamic Finance Education"
+    }
+  ]
+}
