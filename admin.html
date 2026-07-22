@@ -316,12 +316,13 @@ function openPostForm(p){
     
     <div class="fg"><label><strong>Content Blocks</strong></label>
       <div id="fp-blocks"></div>
-      <div class="add-block-bar">
+      <div id="fp-block-editor" style="display:none"></div>
+      <div class="add-block-bar" id="fp-add-bar">
         <select id="fp-newtype">
           <option value="paragraph">Paragraph</option><option value="heading">Heading</option><option value="list">List</option>
           <option value="quote">Quote</option><option value="table">Table</option><option value="callout">Callout</option>
         </select>
-        <button class="btn btn-s btn-o" onclick="addContentBlock()">+ Add Block</button>
+        <button type="button" class="btn btn-s btn-o" onclick="addContentBlock()">+ Add Block</button>
       </div>
     </div>
     <div class="modal-act"><button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button></div>`);
@@ -393,10 +394,29 @@ function openBlockEditor(type,block,idx){
     <div class="fg"><label>Title</label><input class="fc" id="fb-title" value="${b.title||''}"></div>
     <div class="fg"><label>Text</label><textarea class="fc" id="fb-text">${b.text||''}</textarea></div>`;
   }
-  
-  openModal(`<h2>${block?'Edit':'Add'} ${type.charAt(0).toUpperCase()+type.slice(1)}</h2>
-    ${fields}
-    <div class="modal-act"><button class="btn btn-o" onclick="renderBlocks();closeModal()">Cancel</button><button class="btn btn-p" onclick="saveBlock('${type}',${idx})">Save Block</button></div>`);
+
+  // Render inline in the post form modal
+  const editorEl=document.getElementById('fp-block-editor');
+  const addBar=document.getElementById('fp-add-bar');
+  if(editorEl){
+    editorEl.style.display='block';
+    editorEl.innerHTML=`<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:16px;margin-top:12px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <strong style="font-size:0.85rem">${block?'Edit':'Add'} ${type.charAt(0).toUpperCase()+type.slice(1)}</strong>
+        <button type="button" class="btn btn-s btn-o" onclick="cancelBlockEditor()">✕ Cancel</button>
+      </div>
+      ${fields}
+      <button type="button" class="btn btn-s btn-p" style="margin-top:8px" onclick="saveBlock('${type}',${idx})">Save Block</button>
+    </div>`;
+  }
+  if(addBar)addBar.style.display='none';
+}
+
+function cancelBlockEditor(){
+  const editorEl=document.getElementById('fp-block-editor');
+  const addBar=document.getElementById('fp-add-bar');
+  if(editorEl){editorEl.style.display='none';editorEl.innerHTML='';}
+  if(addBar)addBar.style.display='flex';
 }
 
 function saveBlock(type,idx){
@@ -413,7 +433,9 @@ function saveBlock(type,idx){
   else if(type==='callout'){block.style=document.getElementById('fb-style').value;block.title=document.getElementById('fb-title').value;block.text=document.getElementById('fb-text').value;}
   
   if(idx>=0)window._postBlocks[idx]=block;else window._postBlocks.push(block);
-  closeModal();renderBlocks();
+  cancelBlockEditor();
+  renderBlocks();
+  toast('Block added!');
 }
 
 async function savePost(closeAfter){
@@ -722,6 +744,5 @@ async function saveSettings(){
   toast('Settings saved!');
 }
 </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
