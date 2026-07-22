@@ -817,7 +817,7 @@ const App = {
   toggleFAQ(el) { el.closest('.faq-item')?.classList.toggle('open'); },
   searchByTag(tag) { this.openSearch(); const si = document.getElementById('search-input'); if (si) { si.value = tag; this.handleSearch(tag); } },
   
-  // ===== FORMS (WEB3FORMS) =====
+  // ===== FORMS (WEB3FORMS + DB) =====
   async handleContactSubmit(form) {
     const name = form.querySelector('[name="name"]')?.value.trim();
     const email = form.querySelector('[name="email"]')?.value.trim();
@@ -828,37 +828,37 @@ const App = {
     
     btn.disabled = true; btn.textContent = 'Sending...';
     
+    // Always save to database first
+    if (SupabaseClient.connected) {
+      await SupabaseClient.saveContactMessage(name, email, message);
+    }
+    StorageManager.saveContactForm({ name, email, message });
+    
     const accessKey = ContentManager.getWeb3FormsKey();
     
-    if (!accessKey || accessKey === 'YOUR_ACCESS_KEY_HERE') {
-      const subject = encodeURIComponent(`Finance ISL Contact from ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      window.open(`mailto:${ContentManager.getContactEmail()}?subject=${subject}&body=${body}`);
-      this.showToast('Opening email client...', 'info');
-      StorageManager.saveContactForm({ name, email, message });
-      form.reset(); this.closeContactModal();
-      btn.disabled = false; btn.textContent = 'Send Message';
-      return;
+    if (accessKey && accessKey !== 'YOUR_ACCESS_KEY_HERE') {
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_key: accessKey, name, email, message, subject: `Finance ISL Contact from ${name}`, from_name: 'Finance ISL Website' })
+        });
+        const data = await res.json();
+        if (data.success) {
+          this.showToast('Message sent successfully!', 'success');
+          form.reset(); this.closeContactModal();
+          btn.disabled = false; btn.textContent = 'Send Message';
+          return;
+        }
+      } catch (err) { /* fall through to mailto */ }
     }
     
-    try {
-      const res = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_key: accessKey, name, email, message, subject: `Finance ISL Contact from ${name}`, from_name: 'Finance ISL Website' })
-      });
-      const data = await res.json();
-      if (data.success) {
-        this.showToast('Message sent successfully!', 'success');
-        form.reset(); this.closeContactModal();
-      } else throw new Error('Failed');
-    } catch (err) {
-      this.showToast('Failed. Opening email client...', 'warning');
-      const subject = encodeURIComponent(`Finance ISL Contact from ${name}`);
-      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-      window.open(`mailto:${ContentManager.getContactEmail()}?subject=${subject}&body=${body}`);
-    }
-    
+    // Fallback: open email client
+    const subject = encodeURIComponent(`Finance ISL Contact from ${name}`);
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
+    window.open(`mailto:${ContentManager.getContactEmail()}?subject=${subject}&body=${body}`);
+    this.showToast('Message saved. Opening email client...', 'info');
+    form.reset(); this.closeContactModal();
     btn.disabled = false; btn.textContent = 'Send Message';
   },
   
@@ -867,28 +867,29 @@ const App = {
     const email = form.querySelector('[name="email"]')?.value.trim();
     if (!name || !email) { this.showToast('Please fill in all fields', 'error'); return; }
     
+    // Save to database
+    let saved = false;
+    if (SupabaseClient.connected) {
+      const result = await SupabaseClient.saveSubscriber(name, email);
+      saved = result.success;
+      if (result.duplicate) { this.showToast('This email is already subscribed.', 'warning'); form.reset(); return; }
+    }
+    
+    // Also save locally
     StorageManager.saveNewsletterSubscriber({ name, email });
     
     const accessKey = ContentManager.getWeb3FormsKey();
-    
-    if (!accessKey || accessKey === 'YOUR_ACCESS_KEY_HERE') {
-      const subject = encodeURIComponent(`New Newsletter Subscriber: ${name}`);
-      const body = encodeURIComponent(`New Newsletter Subscription\n\nName: ${name}\nEmail: ${email}\nDate: ${new Date().toLocaleString()}`);
-      window.open(`mailto:${ContentManager.getContactEmail()}?subject=${subject}&body=${body}`);
-      this.showToast(`Thank you ${name}!`, 'success');
-      form.reset();
-      return;
+    if (accessKey && accessKey !== 'YOUR_ACCESS_KEY_HERE') {
+      try {
+        await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ access_key: accessKey, name, email, message: `New Newsletter Subscription\n\nName: ${name}\nEmail: ${email}\nDate: ${new Date().toLocaleString()}`, subject: `New Subscriber: ${name}`, from_name: 'Finance ISL Newsletter' })
+        });
+      } catch (err) { /* ok */ }
     }
     
-    try {
-      await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ access_key: accessKey, name, email, message: `New Newsletter Subscription\n\nName: ${name}\nEmail: ${email}\nDate: ${new Date().toLocaleString()}`, subject: `New Subscriber: ${name}`, from_name: 'Finance ISL Newsletter' })
-      });
-    } catch (err) {}
-    
-    this.showToast(`Thank you ${name}!`, 'success');
+    this.showToast(`Thank you ${name}! You've been subscribed.`, 'success');
     form.reset();
   },
   
