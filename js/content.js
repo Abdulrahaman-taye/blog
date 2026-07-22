@@ -9,34 +9,165 @@ const ContentManager = {
   faqs: null,
   glossary: null,
   about: null,
+  source: 'json', // 'supabase' or 'json'
   
   async init() {
-    try {
-      this.config = await this.loadFile('json/app-config.json', 'app-config');
-      this.posts = await this.loadFile('json/blog-posts.json', 'blog-posts');
-      this.authors = await this.loadFile('json/authors.json', 'authors');
-      this.featured = await this.loadFile('json/featured.json', 'featured');
-      this.navigation = await this.loadFile('json/navigation.json', 'navigation');
-      this.downloads = await this.loadFile('json/downloads.json', 'downloads');
-      this.faqs = await this.loadFile('json/faqs.json', 'faqs');
-      this.glossary = await this.loadFile('json/glossary.json', 'glossary');
-      this.about = await this.loadFile('json/about.json', 'about');
-      
-      this.cacheAll();
-      return true;
-    } catch (error) {
-      console.error('Content init error:', error);
-      this.config = this.config || StorageManager.loadCachedData('app-config');
-      this.posts = this.posts || StorageManager.loadCachedData('blog-posts');
-      this.authors = this.authors || StorageManager.loadCachedData('authors');
-      this.featured = this.featured || StorageManager.loadCachedData('featured');
-      this.navigation = this.navigation || StorageManager.loadCachedData('navigation');
-      this.downloads = this.downloads || StorageManager.loadCachedData('downloads');
-      this.faqs = this.faqs || StorageManager.loadCachedData('faqs');
-      this.glossary = this.glossary || StorageManager.loadCachedData('glossary');
-      this.about = this.about || StorageManager.loadCachedData('about');
-      return this.config !== null;
+    // Try Supabase first
+    if (SupabaseClient.connected) {
+      const ok = await this.loadFromSupabase();
+      if (ok) {
+        this.source = 'supabase';
+        console.log('[Content] Loaded from Supabase');
+        return true;
+      }
     }
+    
+    // Fallback to JSON files
+    await this.loadFromJSON();
+    this.source = 'json';
+    console.log('[Content] Loaded from JSON files');
+    return true;
+  },
+  
+  // ===== SUPABASE LOADER =====
+  async loadFromSupabase() {
+    try {
+      const [posts, authors, featured, downloads, faqCats, faqs, glossary, categories, subtopics, about, appSettings, themeSettings] = await Promise.all([
+        SupabaseClient.fetchAll('posts', 'published_date', false),
+        SupabaseClient.fetchAll('authors', 'name'),
+        SupabaseClient.fetchAll('featured', 'sort_order'),
+        SupabaseClient.fetchAll('downloads', 'name'),
+        SupabaseClient.fetchAll('faq_categories', 'sort_order'),
+        SupabaseClient.fetchAll('faqs', 'sort_order'),
+        SupabaseClient.fetchAll('glossary', 'term'),
+        SupabaseClient.fetchAll('categories', 'sort_order'),
+        SupabaseClient.fetchAll('subtopics', 'sort_order'),
+        SupabaseClient.fetchOne('about', 1),
+        SupabaseClient.getSetting('app'),
+        SupabaseClient.getSetting('themes')
+      ]);
+      
+      if (!posts) return false;
+      
+      // Transform posts to match frontend format
+      this.posts = {
+        posts: posts.map(p => ({
+          id: p.id,
+          title: p.title,
+          excerpt: p.excerpt,
+          category: p.category,
+          subtopic: p.subtopic,
+          author: p.author,
+          publishedDate: p.published_date,
+          tags: p.tags || [],
+          featuredImage: {
+            src: p.featured_image_src || '',
+            alt: p.featured_image_alt || '',
+            caption: p.featured_image_caption || ''
+          },
+          content: p.content || [],
+          relatedPosts: p.related_posts || []
+        }))
+      };
+      
+      // Transform authors
+      this.authors = { authors: authors || [] };
+      
+      // Transform featured
+      this.featured = {
+        featured: (featured || []).map(f => f.post_id)
+      };
+      
+      // Transform downloads
+      this.downloads = {
+        downloads: (downloads || []).map(d => ({
+          id: d.id,
+          name: d.name,
+          description: d.description,
+          format: d.format,
+          size: d.size,
+          version: d.version,
+          lastUpdated: d.last_updated,
+          downloadUrl: d.download_url,
+          image: d.image || '',
+          tags: d.tags || []
+        }))
+      };
+      
+      // Transform FAQs
+      const faqMap = {};
+      (faqCats || []).forEach(c => { faqMap[c.id] = c.category; });
+      const faqGrouped = {};
+      (faqs || []).forEach(f => {
+        const catName = faqMap[f.category_id] || 'Other';
+        if (!faqGrouped[catName]) faqGrouped[catName] = [];
+        faqGrouped[catName].push({ id: f.id, question: f.question, answer: f.answer, tags: f.tags || [] });
+      });
+      this.faqs = {
+        faqs: Object.entries(faqGrouped).map(([category, questions]) => ({ category, questions }))
+      };
+      
+      // Transform glossary
+      this.glossary = {
+        glossary: (glossary || []).map(g => ({
+          term: g.term,
+          arabic: g.arabic,
+          pronunciation: g.pronunciation,
+          definition: g.definition,
+          category: g.category,
+          relatedTerms: g.related_terms || []
+        }))
+      };
+      
+      // Transform navigation from categories + subtopics
+      const navMap = {};
+      (categories || []).forEach(c => {
+        navMap[c.id] = { id: c.id, title: c.title, icon: c.icon, description: c.description, subtopics: [] };
+      });
+      (subtopics || []).forEach(s => {
+        if (navMap[s.category_id]) {
+          navMap[s.category_id].subtopics.push({
+            id: s.id,
+            title: s.title,
+            description: s.description,
+            type: s.type || 'blog',
+            page: s.page || null
+          });
+        }
+      });
+      this.navigation = { menu: { main: Object.values(navMap) } };
+      
+      // About
+      this.about = about ? { about: about } : null;
+      
+      // Config from settings
+      this.config = {
+        app: appSettings || {},
+        themes: themeSettings || {}
+      };
+      
+      // Cache everything
+      this.cacheAll();
+      
+      return true;
+    } catch (e) {
+      console.warn('[Content] Supabase load error:', e);
+      return false;
+    }
+  },
+  
+  // ===== JSON LOADER =====
+  async loadFromJSON() {
+    this.config = await this.loadFile('json/app-config.json', 'app-config');
+    this.posts = await this.loadFile('json/blog-posts.json', 'blog-posts');
+    this.authors = await this.loadFile('json/authors.json', 'authors');
+    this.featured = await this.loadFile('json/featured.json', 'featured');
+    this.navigation = await this.loadFile('json/navigation.json', 'navigation');
+    this.downloads = await this.loadFile('json/downloads.json', 'downloads');
+    this.faqs = await this.loadFile('json/faqs.json', 'faqs');
+    this.glossary = await this.loadFile('json/glossary.json', 'glossary');
+    this.about = await this.loadFile('json/about.json', 'about');
+    this.cacheAll();
   },
   
   async loadFile(url, cacheKey) {
@@ -65,47 +196,23 @@ const ContentManager = {
   },
   
   // ===== POSTS =====
-  getAllPosts() {
-    return (this.posts && this.posts.posts) ? this.posts.posts : [];
-  },
-  
-  getPostById(id) {
-    return this.getAllPosts().find(p => p.id === id);
-  },
-  
-  getPostBySlug(slug) {
-    // slug IS the id now
-    return this.getPostById(slug);
-  },
-  
-  getPostsByCategory(cat) {
-    return this.getAllPosts().filter(p => p.category === cat);
-  },
-  
-  getPostsBySubtopic(sub) {
-    return this.getAllPosts().filter(p => p.subtopic === sub);
-  },
-  
+  getAllPosts() { return (this.posts && this.posts.posts) ? this.posts.posts : []; },
+  getPostById(id) { return this.getAllPosts().find(p => p.id === id); },
+  getPostBySlug(slug) { return this.getPostById(slug); },
+  getPostsByCategory(cat) { return this.getAllPosts().filter(p => p.category === cat); },
+  getPostsBySubtopic(sub) { return this.getAllPosts().filter(p => p.subtopic === sub); },
   getFeaturedPosts() {
     if (!this.featured || !this.featured.featured) return [];
-    return this.featured.featured
-      .map(id => this.getPostById(id))
-      .filter(Boolean);
+    return this.featured.featured.map(id => this.getPostById(id)).filter(Boolean);
   },
-  
   getRecentPosts(limit = 9) {
-    return [...this.getAllPosts()]
-      .sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate))
-      .slice(0, limit);
+    return [...this.getAllPosts()].sort((a, b) => new Date(b.publishedDate) - new Date(a.publishedDate)).slice(0, limit);
   },
-  
   getRelatedPosts(postId, limit = 3) {
     const post = this.getPostById(postId);
     if (!post || !post.relatedPosts) return [];
     return post.relatedPosts.map(id => this.getPostById(id)).filter(Boolean).slice(0, limit);
   },
-  
-  // Dynamic reading time based on content
   calculateReadingTime(post) {
     if (!post || !post.content) return '1 min';
     let wordCount = 0;
@@ -113,30 +220,13 @@ const ContentManager = {
       if (block.text) wordCount += block.text.split(/\s+/).length;
       if (block.items) block.items.forEach(item => wordCount += item.split(/\s+/).length);
     });
-    const minutes = Math.max(1, Math.ceil(wordCount / 200));
-    return minutes + ' min read';
+    return Math.max(1, Math.ceil(wordCount / 200)) + ' min read';
   },
-  
-  // Dynamic post count
-  getPostCount() {
-    return this.getAllPosts().length;
-  },
-  
-  getPostCountByCategory(cat) {
-    return this.getPostsByCategory(cat).length;
-  },
-  
-  // Dynamic download count
-  getDownloadCount() {
-    return this.getDownloads().length;
-  },
-  
-  // Latest update date from posts
+  getPostCount() { return this.getAllPosts().length; },
   getLastUpdated() {
     const posts = this.getAllPosts();
-    if (posts.length === 0) return '';
-    const dates = posts.map(p => new Date(p.publishedDate)).sort((a, b) => b - a);
-    return dates[0].toISOString().split('T')[0];
+    if (!posts.length) return '';
+    return posts.map(p => new Date(p.publishedDate)).sort((a, b) => b - a)[0].toISOString().split('T')[0];
   },
   
   // ===== SEARCH =====
@@ -144,18 +234,13 @@ const ContentManager = {
     if (!query || query.length < 2) return [];
     const q = query.toLowerCase().trim();
     const results = [];
-    
     this.getAllPosts().forEach(post => {
       const matches = [];
       let snippet = null;
-      
       if (post.title.toLowerCase().includes(q)) matches.push('title');
       if (post.excerpt && post.excerpt.toLowerCase().includes(q)) matches.push('excerpt');
       if (post.tags && post.tags.some(t => t.toLowerCase().includes(q))) matches.push('tags');
-      if (post.subtopic && (post.subtopic.toLowerCase().includes(q) || post.subtopic.replace(/-/g, ' ').includes(q))) {
-        matches.push('subtopic');
-      }
-      
+      if (post.subtopic && (post.subtopic.toLowerCase().includes(q) || post.subtopic.replace(/-/g,' ').includes(q))) matches.push('subtopic');
       if (post.content) {
         for (const block of post.content) {
           let text = block.text || '';
@@ -168,14 +253,8 @@ const ContentManager = {
           }
         }
       }
-      
-      if (matches.length > 0) {
-        results.push({ post, matchSources: matches, contentSnippet: snippet,
-          priority: matches.includes('title') ? 0 : matches.includes('excerpt') ? 1 : 2
-        });
-      }
+      if (matches.length > 0) results.push({ post, matchSources: matches, contentSnippet: snippet, priority: matches.includes('title') ? 0 : 1 });
     });
-    
     return results.sort((a, b) => a.priority - b.priority);
   },
   
@@ -187,35 +266,22 @@ const ContentManager = {
   
   // ===== CATEGORIES =====
   getCategories() {
-    if (this.navigation && this.navigation.menu && this.navigation.menu.main) {
-      return this.navigation.menu.main;
-    }
+    if (this.navigation && this.navigation.menu && this.navigation.menu.main) return this.navigation.menu.main;
     return [];
   },
-  getCategoryById(id) {
-    return this.getCategories().find(c => c.id === id);
-  },
+  getCategoryById(id) { return this.getCategories().find(c => c.id === id); },
   
   // ===== DOWNLOADS =====
-  getDownloads() {
-    return (this.downloads && this.downloads.downloads) ? this.downloads.downloads : [];
-  },
-  getDownloadById(id) {
-    return this.getDownloads().find(d => d.id === id);
-  },
+  getDownloads() { return (this.downloads && this.downloads.downloads) ? this.downloads.downloads : []; },
+  getDownloadById(id) { return this.getDownloads().find(d => d.id === id); },
+  getDownloadCount() { return this.getDownloads().length; },
   
   // ===== FAQs =====
-  getFAQs() {
-    return (this.faqs && this.faqs.faqs) ? this.faqs.faqs : [];
-  },
-  getFAQCount() {
-    return this.getFAQs().reduce((sum, cat) => sum + cat.questions.length, 0);
-  },
+  getFAQs() { return (this.faqs && this.faqs.faqs) ? this.faqs.faqs : []; },
+  getFAQCount() { return this.getFAQs().reduce((sum, cat) => sum + cat.questions.length, 0); },
   
   // ===== GLOSSARY =====
-  getGlossaryTerms() {
-    return (this.glossary && this.glossary.glossary) ? this.glossary.glossary : [];
-  },
+  getGlossaryTerms() { return (this.glossary && this.glossary.glossary) ? this.glossary.glossary : []; },
   searchGlossary(query) {
     const terms = this.getGlossaryTerms();
     if (!query) return terms;
@@ -230,36 +296,23 @@ const ContentManager = {
       grouped[letter].push(t);
     });
     const sorted = {};
-    Object.keys(grouped).sort().forEach(k => {
-      sorted[k] = grouped[k].sort((a, b) => a.term.localeCompare(b.term));
-    });
+    Object.keys(grouped).sort().forEach(k => { sorted[k] = grouped[k].sort((a, b) => a.term.localeCompare(b.term)); });
     return sorted;
   },
-  getGlossaryCount() {
-    return this.getGlossaryTerms().length;
-  },
+  getGlossaryCount() { return this.getGlossaryTerms().length; },
   
   // ===== ABOUT =====
-  getAbout() {
-    return this.about ? this.about.about : null;
-  },
+  getAbout() { return this.about ? this.about.about : null; },
   
   // ===== CONFIG =====
-  getAppConfig() {
-    return this.config || {};
-  },
-  getWeb3FormsKey() {
-    return (this.config && this.config.app) ? this.config.app.web3formsAccessKey : null;
-  },
-  getContactEmail() {
-    return (this.config && this.config.app) ? this.config.app.email : 'abdulrahamanraye68@gmail.com';
-  },
+  getAppConfig() { return this.config || {}; },
+  getWeb3FormsKey() { return (this.config && this.config.app) ? this.config.app.web3formsAccessKey : (typeof ENV !== 'undefined' ? ENV.WEB3FORMS_KEY : null); },
+  getContactEmail() { return (this.config && this.config.app) ? this.config.app.email : (typeof ENV !== 'undefined' ? ENV.CONTACT_EMAIL : 'abdulrahamanraye68@gmail.com'); },
   
   // ===== UTILS =====
   formatDate(d) {
     if (!d) return '';
-    try { return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); }
-    catch (e) { return d; }
+    try { return new Date(d).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }); } catch (e) { return d; }
   },
   getAuthorInitials(name) {
     if (!name) return '?';

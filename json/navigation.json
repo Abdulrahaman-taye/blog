@@ -6,60 +6,28 @@
         "title": "Business Management",
         "icon": "briefcase",
         "description": "Strategic insights for Islamic business success",
-        "subtopics": [
-          {"id": "leadership", "title": "Leadership", "description": "Islamic leadership principles and practices"},
-          {"id": "strategy", "title": "Strategy", "description": "Strategic planning in Islamic context"},
-          {"id": "marketing", "title": "Marketing", "description": "Halal marketing and consumer engagement"},
-          {"id": "operations", "title": "Operations", "description": "Efficient operations management"},
-          {"id": "human-resources", "title": "Human Resources", "description": "Workforce management in Islamic framework"},
-          {"id": "entrepreneurship", "title": "Entrepreneurship", "description": "Starting and growing Islamic businesses"},
-          {"id": "financial-management", "title": "Financial Management", "description": "Financial planning and management"},
-          {"id": "innovation", "title": "Innovation", "description": "Innovation in Islamic finance and business"}
-        ]
+        "subtopics": []
       },
       {
         "id": "islamic-finance",
         "title": "Islamic Finance",
         "icon": "bank",
         "description": "Comprehensive Islamic finance education",
-        "subtopics": [
-          {"id": "islamic-banking", "title": "Islamic Banking", "description": "Principles and practices of Islamic banking"},
-          {"id": "murabaha", "title": "Murabaha", "description": "Cost-plus financing explained"},
-          {"id": "mudarabah", "title": "Mudarabah", "description": "Partnership-based financing"},
-          {"id": "musharakah", "title": "Musharakah", "description": "Joint venture partnerships"},
-          {"id": "ijarah", "title": "Ijarah", "description": "Islamic leasing and rentals"},
-          {"id": "sukuk", "title": "Sukuk", "description": "Islamic bonds and securities"},
-          {"id": "takaful", "title": "Takaful", "description": "Cooperative insurance"},
-          {"id": "zakat", "title": "Zakat", "description": "Obligatory charity and wealth purification"},
-          {"id": "waqf", "title": "Waqf", "description": "Islamic endowments"},
-          {"id": "islamic-economics", "title": "Islamic Economics", "description": "Economic principles in Islam"}
-        ]
+        "subtopics": []
       },
       {
         "id": "ethics",
         "title": "Ethics",
         "icon": "balance",
         "description": "Ethical frameworks in Islamic business",
-        "subtopics": [
-          {"id": "business-ethics", "title": "Business Ethics", "description": "Ethical conduct in commerce"},
-          {"id": "corporate-governance", "title": "Corporate Governance", "description": "Governance frameworks and accountability"},
-          {"id": "social-responsibility", "title": "Social Responsibility", "description": "CSR and community impact"},
-          {"id": "maqasid-al-shariah", "title": "Maqasid al-Shariah", "description": "Objectives of Islamic law"},
-          {"id": "sustainable-business", "title": "Sustainable Business", "description": "Sustainability in Islamic business"}
-        ]
+        "subtopics": []
       },
       {
         "id": "learning-resources",
         "title": "Learning Resources",
         "icon": "book",
         "description": "Professional educational materials and tools",
-        "subtopics": [
-          {"id": "beginner-guides", "title": "Beginner Guides", "description": "Foundational introductions to Islamic finance concepts", "type": "blog"},
-          {"id": "case-studies", "title": "Case Studies", "description": "Real-world applications and analysis of Islamic finance", "type": "blog"},
-          {"id": "downloads", "title": "Downloads", "description": "Professional templates, calculators, and practical tools", "type": "page", "page": "/downloads"},
-          {"id": "faqs", "title": "FAQs", "description": "Expert answers to commonly asked questions", "type": "page", "page": "/faqs"},
-          {"id": "glossary", "title": "Glossary", "description": "Comprehensive reference of Islamic finance terminology", "type": "page", "page": "/glossary"}
-        ]
+        "subtopics": []
       },
       {
         "id": "about",

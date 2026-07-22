@@ -8,8 +8,19 @@ const App = {
     
     try {
       ThemeManager.init();
+      
+      // Init Supabase connection (non-blocking)
+      SupabaseClient.init();
+      
+      // Wait a moment for Supabase to connect, then load content
+      await new Promise(resolve => {
+        if (SupabaseClient.connected) { resolve(); return; }
+        const timeout = setTimeout(resolve, 2000); // 2s max wait
+        window.addEventListener('supabase-ready', () => { clearTimeout(timeout); resolve(); }, { once: true });
+      });
+      
       const contentLoaded = await ContentManager.init();
-      console.log('Content loaded:', contentLoaded);
+      console.log('Content loaded:', contentLoaded, 'Source:', ContentManager.source);
       
       this.setupEventListeners();
       this.initRouter();
