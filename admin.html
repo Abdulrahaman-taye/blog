@@ -5,84 +5,88 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finance ISL - Admin</title>
   <style>
-    :root{--primary:#1a5632;--primary-dark:#0f3d22;--accent:#d4af37;--bg:#f1f5f9;--surface:#fff;--text:#1e293b;--text2:#64748b;--border:#e2e8f0;--danger:#dc2626;--success:#16a34a}
+    :root{--p:#1a5632;--pd:#0f3d22;--ac:#d4af37;--bg:#f1f5f9;--sf:#fff;--tx:#1e293b;--t2:#64748b;--bd:#e2e8f0;--dn:#dc2626;--ok:#16a34a;--bl:#2563eb}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text)}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx)}
     .layout{display:flex;min-height:100vh}
-    .sidebar{width:250px;background:#0f172a;color:#fff;position:fixed;height:100vh;overflow-y:auto}
+    .sidebar{width:250px;background:#0f172a;color:#fff;position:fixed;height:100vh;overflow-y:auto;z-index:100;transition:.3s}
     .sidebar-brand{padding:20px;border-bottom:1px solid #334155}
-    .sidebar-brand h2{color:var(--accent);font-size:1.1rem}
-    .sidebar-brand small{color:#94a3b8;font-size:0.75rem}
-    .nav-link{display:flex;align-items:center;gap:10px;padding:10px 20px;color:#94a3b8;text-decoration:none;font-size:0.85rem;cursor:pointer;border:none;background:none;width:100%;text-align:left}
+    .sidebar-brand h2{color:var(--ac);font-size:1.1rem}.sidebar-brand small{color:#94a3b8;font-size:.75rem}
+    .nav-link{display:flex;align-items:center;gap:10px;padding:10px 20px;color:#94a3b8;text-decoration:none;font-size:.85rem;cursor:pointer;border:none;background:none;width:100%;text-align:left}
     .nav-link:hover,.nav-link.active{background:#1e293b;color:#fff}
-    .nav-link.active{border-right:3px solid var(--accent)}
+    .nav-link.active{border-right:3px solid var(--ac)}
     .main{flex:1;margin-left:250px;padding:24px}
     .page{display:none}.page.active{display:block}
     .header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px}
     .header h1{font-size:1.4rem}
-    .badge{padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:600}
-    .badge-ok{background:#dcfce7;color:#166534}.badge-err{background:#fee2e2;color:#991b1b}
-    .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:24px}
-    .stat{background:var(--surface);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-    .stat .num{font-size:1.8rem;font-weight:700;color:var(--primary)}.stat .lbl{font-size:0.8rem;color:var(--text2)}
-    .card{background:var(--surface);border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:20px}
+    .badge{padding:4px 12px;border-radius:20px;font-size:.7rem;font-weight:600}
+    .badge-ok{background:#dcfce7;color:#166534}.badge-err{background:#fee2e2;color:#991b1b}.badge-new{background:#fef3c7;color:#92400e}
+    .stats{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px;margin-bottom:24px}
+    .stat{background:var(--sf);border-radius:12px;padding:20px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .stat .num{font-size:1.8rem;font-weight:700;color:var(--p)}.stat .lbl{font-size:.8rem;color:var(--t2)}
+    .card{background:var(--sf);border-radius:12px;padding:24px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:20px}
     .card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
     .card-head h2{font-size:1rem}
-    table{width:100%;border-collapse:collapse;font-size:0.85rem}
-    th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--border)}
-    th{background:#f8fafc;font-weight:600;color:var(--text2);white-space:nowrap;position:sticky;top:0}
+    table{width:100%;border-collapse:collapse;font-size:.85rem}
+    th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--bd)}
+    th{background:#f8fafc;font-weight:600;color:var(--t2);white-space:nowrap;position:sticky;top:0}
     tr:hover{background:#f8fafc}
-    .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;border-radius:8px;font-size:0.8rem;font-weight:500;cursor:pointer;transition:.2s}
-    .btn-p{background:var(--primary);color:#fff}.btn-p:hover{background:var(--primary-dark)}
-    .btn-d{background:var(--danger);color:#fff}.btn-d:hover{background:#b91c1c}
-    .btn-o{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-o:hover{background:#f3f4f6}
-    .btn-s{padding:4px 10px;font-size:0.75rem}
-    .fg{margin-bottom:14px}.fg label{display:block;font-size:0.8rem;font-weight:500;margin-bottom:4px;color:#374151}
-    .fc{width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-size:0.85rem;font-family:inherit}
-    .fc:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,50,.1)}
-    textarea.fc{min-height:80px;resize:vertical}
-    select.fc{background:#fff}
+    .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:none;border-radius:8px;font-size:.8rem;font-weight:500;cursor:pointer;transition:.2s}
+    .btn-p{background:var(--p);color:#fff}.btn-p:hover{background:var(--pd)}
+    .btn-d{background:var(--dn);color:#fff}.btn-d:hover{background:#b91c1c}
+    .btn-o{background:transparent;border:1px solid var(--bd);color:var(--tx)}.btn-o:hover{background:#f3f4f6}
+    .btn-b{background:var(--bl);color:#fff}.btn-b:hover{background:#1d4ed8}
+    .btn-s{padding:4px 10px;font-size:.75rem}
+    .btn:disabled{opacity:.5;cursor:default}
+    .fg{margin-bottom:14px}.fg label{display:block;font-size:.8rem;font-weight:500;margin-bottom:4px;color:#374151}
+    .fc{width:100%;padding:8px 12px;border:1px solid var(--bd);border-radius:8px;font-size:.85rem;font-family:inherit}
+    .fc:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(26,86,50,.1)}
+    textarea.fc{min-height:80px;resize:vertical}select.fc{background:#fff}
     .modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow-y:auto}
     .modal-bg.open{display:flex}
     .modal{background:#fff;border-radius:16px;width:100%;max-width:800px;padding:28px;max-height:90vh;overflow-y:auto}
     .modal h2{margin-bottom:20px;font-size:1.15rem}
-    .modal-act{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
-    .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;color:#fff;font-size:0.85rem;z-index:2000;transform:translateY(100px);opacity:0;transition:.3s}
+    .modal-act{display:flex;gap:8px;justify-content:flex-end;margin-top:20px;padding-top:16px;border-top:1px solid var(--bd)}
+    .toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;color:#fff;font-size:.85rem;z-index:2000;transform:translateY(100px);opacity:0;transition:.3s}
     .toast.show{transform:translateY(0);opacity:1}
-    .toast-ok{background:var(--success)}.toast-err{background:var(--danger)}
+    .toast-ok{background:var(--ok)}.toast-err{background:var(--dn)}.toast-w{background:#d97706}
     .pag{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px}
-    .pag button{padding:6px 12px;border:1px solid var(--border);background:#fff;border-radius:6px;font-size:0.8rem;cursor:pointer}
-    .pag button.active{background:var(--primary);color:#fff;border-color:var(--primary)}
-    .pag button:disabled{opacity:0.4;cursor:default}
-    .tag{display:inline-block;padding:2px 8px;background:#e2e8f0;border-radius:4px;font-size:0.7rem;margin:2px}
-    .block-item{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px;position:relative}
-    .block-item .rm{position:absolute;top:8px;right:8px;background:var(--danger);color:#fff;border:none;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:0.7rem}
-    .block-preview{background:#f1f5f9;border-radius:6px;padding:10px;margin-top:8px;font-size:0.8rem;max-height:120px;overflow:auto}
-    .add-block-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
-    .add-block-bar select{padding:6px 10px;border:1px solid var(--border);border-radius:6px;font-size:0.8rem}
-    .inline-row{display:flex;gap:10px;align-items:center}
-    .inline-row .fg{flex:1}
-    .sub-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#e2e8f0;border-radius:20px;font-size:0.75rem;margin:3px}
-    .sub-chip button{background:var(--danger);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .pag button{padding:6px 12px;border:1px solid var(--bd);background:#fff;border-radius:6px;font-size:.8rem;cursor:pointer}
+    .pag button.active{background:var(--p);color:#fff;border-color:var(--p)}
+    .pag button:disabled{opacity:.4;cursor:default}
+    .tag{display:inline-block;padding:2px 8px;background:#e2e8f0;border-radius:4px;font-size:.7rem;margin:2px}
+    .tag-lock{background:#fef3c7;color:#92400e}
+    .block-item{background:#f8fafc;border:1px solid var(--bd);border-radius:8px;padding:14px;margin-bottom:10px;position:relative}
+    .block-item .rm{position:absolute;top:8px;right:8px;background:var(--dn);color:#fff;border:none;border-radius:4px;padding:2px 8px;cursor:pointer;font-size:.7rem}
+    .block-preview{background:#f1f5f9;border-radius:6px;padding:10px;margin-top:8px;font-size:.8rem;max-height:120px;overflow:auto}
+    .add-block-bar{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)}
+    .add-block-bar select{padding:6px 10px;border:1px solid var(--bd);border-radius:6px;font-size:.8rem}
+    .inline-row{display:flex;gap:10px;align-items:flex-start}.inline-row .fg{flex:1}
+    .sub-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#e2e8f0;border-radius:20px;font-size:.75rem;margin:3px}
+    .sub-chip button{background:var(--dn);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .upload-area{border:2px dashed var(--bd);border-radius:8px;padding:16px;text-align:center;cursor:pointer;transition:.2s;margin-bottom:8px}
+    .upload-area:hover{border-color:var(--p);background:#f0fdf4}
+    .upload-area.dragover{border-color:var(--p);background:#dcfce7}
+    .upload-area input[type=file]{display:none}
+    .upload-preview{max-width:120px;max-height:80px;border-radius:6px;margin-top:8px}
+    .msg-unread{font-weight:600}
     .mobile-toggle{display:none;position:fixed;top:12px;left:12px;z-index:1001;background:#0f172a;color:#fff;border:none;border-radius:8px;width:40px;height:40px;font-size:1.2rem;cursor:pointer;align-items:center;justify-content:center}
     .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:99}
     @media(max-width:768px){
       .mobile-toggle{display:flex}
-      .sidebar{transform:translateX(-100%);transition:.3s;z-index:100}
-      .sidebar.open{transform:translateX(0)}
+      .sidebar{transform:translateX(-100%);z-index:100}.sidebar.open{transform:translateX(0)}
       .sidebar-overlay.open{display:block}
       .main{margin-left:0;padding:16px;padding-top:60px}
       .inline-row{flex-direction:column}
-      .modal{padding:20px}
-      .modal-bg{padding:16px 8px}
+      .modal{padding:20px}.modal-bg{padding:16px 8px}
       .stats{grid-template-columns:repeat(2,1fr)}
       .header h1{font-size:1.1rem}
-      table{font-size:0.75rem}th,td{padding:8px 6px}
+      table{font-size:.75rem}th,td{padding:8px 6px}
     }
   </style>
 </head>
 <body>
-<button class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()">☰</button>
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div class="layout">
   <aside class="sidebar" id="sidebar">
@@ -96,12 +100,13 @@
     <button class="nav-link" onclick="go('faqs',this)">❓ FAQs</button>
     <button class="nav-link" onclick="go('glossary',this)">📖 Glossary</button>
     <button class="nav-link" onclick="go('about',this)">ℹ️ About</button>
+    <button class="nav-link" onclick="go('messages',this)">💬 Messages</button>
+    <button class="nav-link" onclick="go('subscribers',this)">📧 Subscribers</button>
     <button class="nav-link" onclick="go('settings',this)">⚙️ Settings</button>
     <a class="nav-link" href="index.html" style="margin-top:16px;border-top:1px solid #334155;padding-top:14px">🌐 View Site</a>
   </aside>
 
   <main class="main">
-    <!-- DASHBOARD -->
     <div class="page active" id="pg-dashboard">
       <div class="header"><h1>Dashboard</h1><span class="badge" id="conn">Connecting…</span></div>
       <div class="stats">
@@ -110,60 +115,62 @@
         <div class="stat"><div class="num" id="s-downloads">0</div><div class="lbl">Downloads</div></div>
         <div class="stat"><div class="num" id="s-faqs">0</div><div class="lbl">FAQs</div></div>
         <div class="stat"><div class="num" id="s-gloss">0</div><div class="lbl">Glossary</div></div>
-        <div class="stat"><div class="num" id="s-cats">0</div><div class="lbl">Categories</div></div>
+        <div class="stat"><div class="num" id="s-msgs">0</div><div class="lbl">Messages</div></div>
+        <div class="stat"><div class="num" id="s-subs">0</div><div class="lbl">Subscribers</div></div>
       </div>
-      <div class="card"><h2>Welcome</h2><p style="margin-top:8px;color:var(--text2);font-size:0.9rem">Use the sidebar to manage all content. Changes save directly to Supabase.</p></div>
+      <div class="card"><h2>Welcome</h2><p style="margin-top:8px;color:var(--t2);font-size:.9rem">Manage all content from this dashboard. Changes save directly to Supabase.</p></div>
     </div>
 
-    <!-- POSTS -->
     <div class="page" id="pg-posts">
       <div class="header"><h1>Blog Posts</h1><button class="btn btn-p" onclick="newPost()">+ New Post</button></div>
       <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Title</th><th>Category</th><th>Subtopic</th><th>Author</th><th>Date</th><th>Actions</th></tr></thead><tbody id="tb-posts"></tbody></table></div><div class="pag" id="pag-posts"></div></div>
     </div>
 
-    <!-- AUTHORS -->
     <div class="page" id="pg-authors">
       <div class="header"><h1>Authors</h1><button class="btn btn-p" onclick="newAuthor()">+ New Author</button></div>
       <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Specialization</th><th>Actions</th></tr></thead><tbody id="tb-authors"></tbody></table></div><div class="pag" id="pag-authors"></div></div>
     </div>
 
-    <!-- FEATURED -->
     <div class="page" id="pg-featured">
       <div class="header"><h1>Featured Posts</h1></div>
-      <div class="card"><p style="margin-bottom:12px;color:var(--text2);font-size:0.85rem">Check posts to feature on the home page.</p><div id="featured-list"></div></div>
+      <div class="card"><p style="margin-bottom:12px;color:var(--t2);font-size:.85rem">Check posts to feature on the home page.</p><div id="featured-list"></div></div>
     </div>
 
-    <!-- NAVIGATION -->
     <div class="page" id="pg-navigation">
       <div class="header"><h1>Navigation</h1></div>
       <div id="nav-cats"></div>
     </div>
 
-    <!-- DOWNLOADS -->
     <div class="page" id="pg-downloads">
       <div class="header"><h1>Downloads</h1><button class="btn btn-p" onclick="newDownload()">+ New Download</button></div>
-      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Format</th><th>Size</th><th>Actions</th></tr></thead><tbody id="tb-downloads"></tbody></table></div><div class="pag" id="pag-downloads"></div></div>
+      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Format</th><th>Size</th><th>Locked</th><th>Actions</th></tr></thead><tbody id="tb-downloads"></tbody></table></div><div class="pag" id="pag-downloads"></div></div>
     </div>
 
-    <!-- FAQs -->
     <div class="page" id="pg-faqs">
       <div class="header"><h1>FAQs</h1><div><button class="btn btn-p" onclick="newFaq()">+ FAQ</button> <button class="btn btn-o" onclick="newFaqCat()">+ Category</button></div></div>
-      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Question</th><th>Category</th><th>Actions</th></tr></thead><tbody id="tb-faqs"></tbody></table></div><div class="pag" id="pag-faqs"></div></div>
+      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Question</th><th>Category</th><th>Locked</th><th>Actions</th></tr></thead><tbody id="tb-faqs"></tbody></table></div><div class="pag" id="pag-faqs"></div></div>
     </div>
 
-    <!-- GLOSSARY -->
     <div class="page" id="pg-glossary">
       <div class="header"><h1>Glossary</h1><button class="btn btn-p" onclick="newGlossary()">+ New Term</button></div>
-      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Term</th><th>Arabic</th><th>Category</th><th>Actions</th></tr></thead><tbody id="tb-glossary"></tbody></table></div><div class="pag" id="pag-glossary"></div></div>
+      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Term</th><th>Arabic</th><th>Category</th><th>Locked</th><th>Actions</th></tr></thead><tbody id="tb-glossary"></tbody></table></div><div class="pag" id="pag-glossary"></div></div>
     </div>
 
-    <!-- ABOUT -->
     <div class="page" id="pg-about">
       <div class="header"><h1>About Page</h1></div>
       <div class="card" id="about-form"></div>
     </div>
 
-    <!-- SETTINGS -->
+    <div class="page" id="pg-messages">
+      <div class="header"><h1>Contact Messages</h1></div>
+      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-messages"></tbody></table></div><div class="pag" id="pag-messages"></div></div>
+    </div>
+
+    <div class="page" id="pg-subscribers">
+      <div class="header"><h1>Newsletter Subscribers</h1></div>
+      <div class="card"><div style="overflow-x:auto"><table><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th><th>Actions</th></tr></thead><tbody id="tb-subscribers"></tbody></table></div><div class="pag" id="pag-subscribers"></div></div>
+    </div>
+
     <div class="page" id="pg-settings">
       <div class="header"><h1>Settings</h1></div>
       <div class="card" id="settings-form"></div>
@@ -177,70 +184,82 @@
 <script src="env.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
-// ===== CORE =====
-let db=null,PAGE_SIZE=10,pages={};
+let db=null,PAGE=10,pages={};
 
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebar-overlay').classList.toggle('open');
-}
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open');}
 
 function go(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
   document.getElementById('pg-'+name).classList.add('active');
   if(el)el.classList.add('active');
-  // Close sidebar on mobile after navigation
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebar-overlay').classList.remove('open');
-  const loaders={dashboard:loadDashboard,posts:loadPosts,authors:loadAuthors,featured:loadFeatured,navigation:loadNavigation,downloads:loadDownloads,faqs:loadFaqs,glossary:loadGlossary,about:loadAbout,settings:loadSettings};
-  if(loaders[name])loaders[name]();
+  const L={dashboard:loadDashboard,posts:loadPosts,authors:loadAuthors,featured:loadFeatured,navigation:loadNavigation,downloads:loadDownloads,faqs:loadFaqs,glossary:loadGlossary,about:loadAbout,messages:loadMessages,subscribers:loadSubscribers,settings:loadSettings};
+  if(L[name])L[name]();
 }
 
-function toast(m,t='ok'){const el=document.getElementById('toast');el.textContent=m;el.className='toast toast-'+t+' show';setTimeout(()=>el.classList.remove('show'),3000);}
+function toast(m,t='ok'){const el=document.getElementById('toast');el.textContent=m;el.className='toast toast-'+t+' show';setTimeout(()=>el.classList.remove('show'),3500);}
 function openModal(h){document.getElementById('modal').innerHTML=h;document.getElementById('modal-bg').classList.add('open');}
 function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
 
-async function dbAll(table,col,asc){
-  if(!db)return[];
-  let q=db.from(table).select('*');
-  if(col)q=q.order(col,{ascending:asc!==false});
-  const{data}=await q;return data||[];
-}
-async function dbGet(table,id){
-  if(!db)return null;
-  const{data}=await db.from(table).select('*').eq('id',id).single();
-  return data;
-}
-async function dbUpsert(table,row){
-  if(!db)return{error:'No DB'};
-  return await db.from(table).upsert(row);
-}
-async function dbDel(table,id,col){
-  if(!db)return{error:'No DB'};
-  let q=db.from(table).delete();
-  return col?await q.eq(col,id):await q.eq('id',id);
+async function dbAll(t,c,a){if(!db)return[];let q=db.from(t).select('*');if(c)q=q.order(c,{ascending:a!==false});const{d}=await q;return d||[];}
+async function dbGet(t,id){if(!db)return null;const{data}=await db.from(t).select('*').eq('id',id).single();return data;}
+async function dbUp(t,row){if(!db)return{error:'No DB'};return await db.from(t).upsert(row);}
+async function dbDel(t,id,col){if(!db)return{error:'No DB'};let q=db.from(t).delete();return col?await q.eq(col,id):await q.eq('id',id);}
+
+function pg(arr,n){const tot=arr.length,tp=Math.ceil(tot/PAGE)||1,s=(n-1)*PAGE;return{items:arr.slice(s,s+PAGE),tot,tp,p:n};}
+function rPag(id,n,tp,cb){const el=document.getElementById(id);if(tp<=1){el.innerHTML='';return;}let h='<button '+(n<=1?'disabled':'')+' onclick="'+cb+'('+(n-1)+')">‹</button>';for(let i=1;i<=tp;i++){if(tp>7&&i>3&&i<tp-2&&Math.abs(i-n)>1){if(i===4)h+='<span>…</span>';continue;}h+='<button class="'+(i===n?'active':'')+'" onclick="'+cb+'('+i+')">'+i+'</button>';}h+='<button '+(n>=tp?'disabled':'')+' onclick="'+cb+'('+(n+1)+')">›</button>';el.innerHTML=h;}
+
+// Upload helper
+function uploadUI(fieldId,bucket,label,currentUrl){
+  return`<div class="fg"><label>${label}</label>
+    <div class="upload-area" id="ua-${fieldId}" onclick="document.getElementById('uf-${fieldId}').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event,'${fieldId}','${bucket}')">
+      <input type="file" id="uf-${fieldId}" accept="${bucket.includes('image')?'image/*':'.pdf,.docx,.xlsx,.pptx'}" onchange="handleFileSelect(this,'${fieldId}','${bucket}')">
+      <p style="font-size:.8rem;color:var(--t2)">📁 Click to upload or drag & drop</p>
+      <div id="up-${fieldId}"></div>
+    </div>
+    <div class="inline-row"><div class="fg" style="flex:1"><label style="font-size:.7rem">Or enter URL manually</label><input class="fc" id="uv-${fieldId}" value="${currentUrl||''}" placeholder="https://..."></div></div>
+  </div>`;
 }
 
-// Pagination helper
-function paginate(arr,pageNum){
-  const total=arr.length;const totalPages=Math.ceil(total/PAGE_SIZE)||1;
-  const start=(pageNum-1)*PAGE_SIZE;
-  return{items:arr.slice(start,start+PAGE_SIZE),total,totalPages,page:pageNum};
-}
-function renderPag(containerId,pageNum,totalPages,callback){
-  const el=document.getElementById(containerId);
-  if(totalPages<=1){el.innerHTML='';return;}
-  let h='<button '+(pageNum<=1?'disabled':'')+' onclick="'+callback+'('+(pageNum-1)+')">‹</button>';
-  for(let i=1;i<=totalPages;i++){
-    if(totalPages>7&&i>3&&i<totalPages-2&&Math.abs(i-pageNum)>1){if(i===4)h+='<span style="padding:0 4px">…</span>';continue;}
-    h+='<button class="'+(i===pageNum?'active':'')+'" onclick="'+callback+'('+i+')">'+i+'</button>';
+async function handleFileSelect(input,fieldId,bucket){
+  if(!input.files[0])return;
+  const file=input.files[0];
+  const preview=document.getElementById('up-'+fieldId);
+  preview.innerHTML='<p style="font-size:.75rem;color:var(--p)">Uploading '+file.name+'...</p>';
+  // Upload via Supabase storage
+  if(db){
+    const ext=file.name.split('.').pop().toLowerCase();
+    const base=file.name.replace(/\.[^/.]+$/,'').replace(/[^a-zA-Z0-9-_]/g,'-').toLowerCase();
+    const uid=Date.now().toString(36)+Math.random().toString(36).substr(2,5);
+    const path=base+'-'+uid+'.'+ext;
+    try{
+      const{error}=await db.storage.from(bucket).upload(path,file,{cacheControl:'3600',upsert:false});
+      if(error)throw error;
+      const{data}=db.storage.from(bucket).getPublicUrl(path);
+      document.getElementById('uv-'+fieldId).value=data.publicUrl;
+      if(file.type.startsWith('image/'))preview.innerHTML='<img src="'+data.publicUrl+'" class="upload-preview"><p style="font-size:.7rem;color:var(--ok);margin-top:4px">✓ Uploaded</p>';
+      else preview.innerHTML='<p style="font-size:.7rem;color:var(--ok)">✓ '+file.name+' uploaded</p>';
+    }catch(e){
+      preview.innerHTML='<p style="font-size:.7rem;color:var(--dn)">Upload failed: '+e.message+'</p>';
+    }
   }
-  h+='<button '+(pageNum>=totalPages?'disabled':'')+' onclick="'+callback+'('+(pageNum+1)+')">›</button>';
-  el.innerHTML=h;
 }
 
-// Init
+function handleDrop(e,fieldId,bucket){
+  e.preventDefault();
+  document.getElementById('ua-'+fieldId).classList.remove('dragover');
+  const file=e.dataTransfer.files[0];
+  if(file){
+    const dt=new DataTransfer();dt.items.add(file);
+    document.getElementById('uf-'+fieldId).files=dt.files;
+    handleFileSelect(document.getElementById('uf-'+fieldId),fieldId,bucket);
+  }
+}
+
+function getUploadUrl(fieldId){return document.getElementById('uv-'+fieldId)?.value.trim()||'';}
+
 window.addEventListener('DOMContentLoaded',async()=>{
   if(typeof ENV==='undefined'||!ENV.SUPABASE_URL||ENV.SUPABASE_URL.includes('YOUR_PROJECT_ID')){
     document.getElementById('conn').textContent='Not configured';document.getElementById('conn').className='badge badge-err';
@@ -255,250 +274,128 @@ window.addEventListener('DOMContentLoaded',async()=>{
 
 // ===== DASHBOARD =====
 async function loadDashboard(){
-  const[posts,authors,downloads,faqs,gloss,cats]=await Promise.all([dbAll('posts'),dbAll('authors'),dbAll('downloads'),dbAll('faqs'),dbAll('glossary'),dbAll('categories')]);
-  document.getElementById('s-posts').textContent=posts.length;
-  document.getElementById('s-authors').textContent=authors.length;
-  document.getElementById('s-downloads').textContent=downloads.length;
-  document.getElementById('s-faqs').textContent=faqs.length;
-  document.getElementById('s-gloss').textContent=gloss.length;
-  document.getElementById('s-cats').textContent=cats.length;
+  const[ps,au,dl,fa,gl,msg,sub]=await Promise.all([dbAll('posts'),dbAll('authors'),dbAll('downloads'),dbAll('faqs'),dbAll('glossary'),dbAll('contact_messages'),dbAll('newsletter_subscribers')]);
+  document.getElementById('s-posts').textContent=ps.length;
+  document.getElementById('s-authors').textContent=au.length;
+  document.getElementById('s-downloads').textContent=dl.length;
+  document.getElementById('s-faqs').textContent=fa.length;
+  document.getElementById('s-gloss').textContent=gl.length;
+  document.getElementById('s-msgs').textContent=msg.length;
+  document.getElementById('s-subs').textContent=sub.length;
 }
 
 // ===== POSTS =====
-let postsData=[],authorsData=[],catsData=[],subsData=[];
-async function loadPosts(){
-  [postsData,authorsData,catsData,subsData]=await Promise.all([dbAll('posts','published_date',false),dbAll('authors','name'),dbAll('categories','sort_order'),dbAll('subtopics','sort_order')]);
-  pages.posts=1;renderPosts();
+let postsD=[],authorsD=[],catsD=[],subsD=[];
+async function loadPosts(){[postsD,authorsD,catsD,subsD]=await Promise.all([dbAll('posts','published_date',false),dbAll('authors','name'),dbAll('categories','sort_order'),dbAll('subtopics','sort_order')]);pages.posts=1;rPosts();}
+function rPosts(){
+  const p=pg(postsD,pages.posts||1),am={};authorsD.forEach(a=>am[a.id]=a.name);
+  document.getElementById('tb-posts').innerHTML=p.items.length?p.items.map(r=>`<tr><td>${r.title}</td><td>${r.category}</td><td>${r.subtopic||'-'}</td><td>${am[r.author]||r.author||'-'}</td><td>${r.published_date||'-'}</td><td><button class="btn btn-s btn-o" onclick="editPost('${r.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delPost('${r.id}')">Del</button></td></tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--t2);padding:24px">No posts yet</td></tr>';
+  rPag('pag-posts',p.p,p.tp,'gP');
 }
-function renderPosts(){
-  const p=paginate(postsData,pages.posts||1);
-  const amap={};authorsData.forEach(a=>amap[a.id]=a.name);
-  document.getElementById('tb-posts').innerHTML=p.items.length?p.items.map(r=>`<tr>
-    <td>${r.title}</td><td>${r.category}</td><td>${r.subtopic||'-'}</td><td>${amap[r.author]||r.author||'-'}</td><td>${r.published_date||'-'}</td>
-    <td><button class="btn btn-s btn-o" onclick="editPost('${r.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delPost('${r.id}')">Del</button></td>
-  </tr>`).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--text2);padding:24px">No posts yet</td></tr>';
-  renderPag('pag-posts',p.page,p.totalPages,'gotoPosts');
-}
-function gotoPosts(n){pages.posts=n;renderPosts();}
-
+function gP(n){pages.posts=n;rPosts();}
 async function delPost(id){if(!confirm('Delete this post?'))return;await dbDel('posts',id);toast('Deleted');loadPosts();}
+async function editPost(id){const p=await dbGet('posts',id);if(p)oPF(p);}
+function newPost(){oPF(null);}
 
-async function editPost(id){const p=await dbGet('posts',id);if(p)openPostForm(p);}
-
-function newPost(){openPostForm(null);}
-
-function openPostForm(p){
+function oPF(p){
   const post=p||{};
-  const catOpts=catsData.map(c=>`<option value="${c.id}" ${post.category===c.id?'selected':''}>${c.title}</option>`).join('');
-  const subOpts=subsData.filter(s=>s.category_id===(post.category||'')).map(s=>`<option value="${s.id}" ${post.subtopic===s.id?'selected':''}>${s.title}</option>`).join('');
-  const authOpts=authorsData.map(a=>`<option value="${a.id}" ${post.author===a.id?'selected':''}>${a.name}</option>`).join('');
-  const content=JSON.stringify(post.content||[],null,2);
-  
+  const catO=catsD.map(c=>`<option value="${c.id}" ${post.category===c.id?'selected':''}>${c.title}</option>`).join('');
+  const subO=subsD.filter(s=>s.category_id===(post.category||'')).map(s=>`<option value="${s.id}" ${post.subtopic===s.id?'selected':''}>${s.title}</option>`).join('');
+  const autO=authorsD.map(a=>`<option value="${a.id}" ${post.author===a.id?'selected':''}>${a.name}</option>`).join('');
   openModal(`<h2>${p?'Edit':'New'} Post</h2>
-    <div class="inline-row">
-      <div class="fg"><label>Post ID (slug)</label><input class="fc" id="fp-id" value="${post.id||''}" ${p?'readonly':''} placeholder="e.g. understanding-murabaha"></div>
-      <div class="fg"><label>Published Date</label><input class="fc" type="date" id="fp-date" value="${post.published_date||new Date().toISOString().split('T')[0]}"></div>
-    </div>
+    <div class="inline-row"><div class="fg"><label>Post ID (slug)</label><input class="fc" id="fp-id" value="${post.id||''}" ${p?'readonly':''} placeholder="e.g. understanding-murabaha"></div><div class="fg"><label>Published Date</label><input class="fc" type="date" id="fp-date" value="${post.published_date||new Date().toISOString().split('T')[0]}"></div></div>
     <div class="fg"><label>Title</label><input class="fc" id="fp-title" value="${post.title||''}"></div>
     <div class="fg"><label>Excerpt</label><textarea class="fc" id="fp-excerpt">${post.excerpt||''}</textarea></div>
-    <div class="inline-row">
-      <div class="fg"><label>Category</label><select class="fc" id="fp-cat" onchange="onPostCatChange()"><option value="">Select…</option>${catOpts}</select></div>
-      <div class="fg"><label>Subtopic</label><select class="fc" id="fp-sub"><option value="">Select…</option>${subOpts}</select></div>
-      <div class="fg"><label>Author</label><select class="fc" id="fp-author"><option value="">Select…</option>${authOpts}</select></div>
-    </div>
+    <div class="inline-row"><div class="fg"><label>Category</label><select class="fc" id="fp-cat" onchange="onCatCh()"><option value="">Select…</option>${catO}</select></div><div class="fg"><label>Subtopic</label><select class="fc" id="fp-sub"><option value="">Select…</option>${subO}</select></div><div class="fg"><label>Author</label><select class="fc" id="fp-author"><option value="">Select…</option>${autO}</select></div></div>
     <div class="fg"><label>Tags (comma separated)</label><input class="fc" id="fp-tags" value="${(post.tags||[]).join(', ')}"></div>
-    <div class="inline-row">
-      <div class="fg"><label>Featured Image URL</label><input class="fc" id="fp-img" value="${post.featured_image_src||''}"></div>
-      <div class="fg"><label>Image Alt Text</label><input class="fc" id="fp-imgalt" value="${post.featured_image_alt||''}"></div>
-    </div>
-    <div class="fg"><label>Image Caption</label><input class="fc" id="fp-imgcap" value="${post.featured_image_caption||''}"></div>
+    ${uploadUI('fp-img','post-images','Featured Image',post.featured_image_src||'')}
+    <div class="inline-row"><div class="fg"><label>Image Alt</label><input class="fc" id="fp-imgalt" value="${post.featured_image_alt||''}"></div><div class="fg"><label>Image Caption</label><input class="fc" id="fp-imgcap" value="${post.featured_image_caption||''}"></div></div>
     <div class="fg"><label>Related Post IDs (comma separated)</label><input class="fc" id="fp-related" value="${(post.related_posts||[]).join(', ')}"></div>
-    
-    <div class="fg"><label><strong>Content Blocks</strong></label>
-      <div id="fp-blocks"></div>
-      <div id="fp-block-editor" style="display:none"></div>
-      <div class="add-block-bar" id="fp-add-bar">
-        <select id="fp-newtype">
-          <option value="paragraph">Paragraph</option><option value="heading">Heading</option><option value="list">List</option>
-          <option value="quote">Quote</option><option value="table">Table</option><option value="callout">Callout</option>
-        </select>
-        <button type="button" class="btn btn-s btn-o" onclick="addContentBlock()">+ Add Block</button>
-      </div>
-    </div>
+    <div class="fg"><label><strong>Content Blocks</strong></label><div id="fp-blocks"></div><div id="fp-block-editor" style="display:none"></div><div class="add-block-bar" id="fp-add-bar"><select id="fp-newtype"><option value="paragraph">Paragraph</option><option value="heading">Heading</option><option value="list">List</option><option value="quote">Quote</option><option value="table">Table</option><option value="callout">Callout</option></select><button type="button" class="btn btn-s btn-o" onclick="addBlock()">+ Add Block</button></div></div>
     <div class="modal-act"><button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button></div>`);
-  
-  window._postBlocks=post.content||[];
-  renderBlocks();
+  window._blocks=post.content||[];rBlocks();
+}
+function onCatCh(){const c=document.getElementById('fp-cat').value,s=document.getElementById('fp-sub');s.innerHTML='<option value="">Select…</option>'+subsD.filter(x=>x.category_id===c).map(x=>`<option value="${x.id}">${x.title}</option>`).join('');}
+
+function rBlocks(){const el=document.getElementById('fp-blocks');if(!el)return;if(!window._blocks.length){el.innerHTML='<p style="color:var(--t2);font-size:.8rem;padding:8px">No blocks yet.</p>';return;}
+el.innerHTML=window._blocks.map((b,i)=>{let pv='';
+  if(b.type==='paragraph')pv=b.text?b.text.substring(0,100)+'…':'';
+  else if(b.type==='heading')pv='<strong>H'+(b.level||2)+':</strong> '+b.text;
+  else if(b.type==='list')pv=(b.style==='ordered'?'1. ':'• ')+(b.items||[]).slice(0,3).join(', ');
+  else if(b.type==='quote')pv='"'+(b.text||'').substring(0,80)+'…"';
+  else if(b.type==='table')pv='Table: '+(b.headers||[]).join(' | ');
+  else if(b.type==='callout')pv='['+b.style+'] '+(b.title||'');
+  return`<div class="block-item"><strong style="font-size:.7rem;color:var(--t2);text-transform:uppercase">${b.type}</strong><button class="rm" onclick="rmBlock(${i})">✕</button><button class="rm" style="right:32px;background:var(--p)" onclick="edBlock(${i})">✎</button><div class="block-preview">${pv||'(empty)'}</div></div>`;}).join('');}
+
+function addBlock(){const t=document.getElementById('fp-newtype').value;oBE(t,null,-1);}
+function edBlock(i){oBE(window._blocks[i].type,window._blocks[i],i);}
+function rmBlock(i){window._blocks.splice(i,1);rBlocks();}
+
+function oBE(type,block,idx){
+  const b=block||{};let f='';
+  if(type==='paragraph')f=`<div class="fg"><label>Text</label><textarea class="fc" id="fb-text" style="min-height:150px">${b.text||''}</textarea></div>`;
+  else if(type==='heading')f=`<div class="fg"><label>Level</label><select class="fc" id="fb-level">${[1,2,3,4,5,6].map(l=>`<option ${l===(b.level||2)?'selected':''}>${l}</option>`).join('')}</select></div><div class="fg"><label>Text</label><input class="fc" id="fb-text" value="${b.text||''}"></div>`;
+  else if(type==='list')f=`<div class="fg"><label>Style</label><select class="fc" id="fb-style"><option value="unordered" ${b.style!=='ordered'?'selected':''}>Bullets</option><option value="ordered" ${b.style==='ordered'?'selected':''}>Numbers</option></select></div><div class="fg"><label>Items (one per line)</label><textarea class="fc" id="fb-items" style="min-height:150px">${(b.items||[]).join('\n')}</textarea></div>`;
+  else if(type==='quote')f=`<div class="fg"><label>Quote</label><textarea class="fc" id="fb-text">${b.text||''}</textarea></div><div class="fg"><label>Source</label><input class="fc" id="fb-source" value="${b.source||''}"></div>`;
+  else if(type==='table')f=`<div class="fg"><label>Headers (comma separated)</label><input class="fc" id="fb-headers" value="${(b.headers||[]).join(', ')}"></div><div class="fg"><label>Rows (one per line, cols separated by |)</label><textarea class="fc" id="fb-rows" style="min-height:150px">${(b.rows||[]).map(r=>r.join(' | ')).join('\n')}</textarea></div><div class="fg"><label>Caption</label><input class="fc" id="fb-caption" value="${b.caption||''}"></div>`;
+  else if(type==='callout')f=`<div class="fg"><label>Style</label><select class="fc" id="fb-style"><option value="info" ${b.style==='info'?'selected':''}>Info</option><option value="warning" ${b.style==='warning'?'selected':''}>Warning</option><option value="success" ${b.style==='success'?'selected':''}>Success</option><option value="error" ${b.style==='error'?'selected':''}>Error</option></select></div><div class="fg"><label>Title</label><input class="fc" id="fb-title" value="${b.title||''}"></div><div class="fg"><label>Text</label><textarea class="fc" id="fb-text">${b.text||''}</textarea></div>`;
+  const ed=document.getElementById('fp-block-editor'),ab=document.getElementById('fp-add-bar');
+  if(ed){ed.style.display='block';ed.innerHTML=`<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:16px;margin-top:12px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><strong style="font-size:.85rem">${block?'Edit':'Add'} ${type}</strong><button type="button" class="btn btn-s btn-o" onclick="cancelBE()">✕</button></div>${f}<button type="button" class="btn btn-s btn-p" style="margin-top:8px" onclick="saveBl('${type}',${idx})">Save Block</button></div>`;}
+  if(ab)ab.style.display='none';
+}
+function cancelBE(){const ed=document.getElementById('fp-block-editor'),ab=document.getElementById('fp-add-bar');if(ed){ed.style.display='none';ed.innerHTML='';}if(ab)ab.style.display='flex';}
+
+function saveBl(type,idx){
+  let b={type};
+  if(type==='paragraph')b.text=document.getElementById('fb-text').value;
+  else if(type==='heading'){b.level=parseInt(document.getElementById('fb-level').value);b.text=document.getElementById('fb-text').value;}
+  else if(type==='list'){b.style=document.getElementById('fb-style').value;b.items=document.getElementById('fb-items').value.split('\n').map(s=>s.trim()).filter(Boolean);}
+  else if(type==='quote'){b.text=document.getElementById('fb-text').value;b.source=document.getElementById('fb-source').value||undefined;}
+  else if(type==='table'){b.headers=document.getElementById('fb-headers').value.split(',').map(s=>s.trim());b.rows=document.getElementById('fb-rows').value.split('\n').filter(Boolean).map(l=>l.split('|').map(s=>s.trim()));const c=document.getElementById('fb-caption').value;if(c)b.caption=c;}
+  else if(type==='callout'){b.style=document.getElementById('fb-style').value;b.title=document.getElementById('fb-title').value;b.text=document.getElementById('fb-text').value;}
+  if(idx>=0)window._blocks[idx]=b;else window._blocks.push(b);
+  cancelBE();rBlocks();toast('Block saved!');
 }
 
-function onPostCatChange(){
-  const catId=document.getElementById('fp-cat').value;
-  const subSel=document.getElementById('fp-sub');
-  const subs=subsData.filter(s=>s.category_id===catId);
-  subSel.innerHTML='<option value="">Select…</option>'+subs.map(s=>`<option value="${s.id}">${s.title}</option>`).join('');
-}
-
-function renderBlocks(){
-  const el=document.getElementById('fp-blocks');
-  if(!el)return;
-  if(!window._postBlocks||window._postBlocks.length===0){el.innerHTML='<p style="color:var(--text2);font-size:0.8rem;padding:8px">No content blocks yet. Add one below.</p>';return;}
-  el.innerHTML=window._postBlocks.map((b,i)=>{
-    let preview='';
-    if(b.type==='paragraph')preview=b.text?b.text.substring(0,100)+'…':'';
-    else if(b.type==='heading')preview='<strong>H'+(b.level||2)+':</strong> '+b.text;
-    else if(b.type==='list')preview=(b.style==='ordered'?'1. ':'• ')+(b.items||[]).slice(0,3).join(', ');
-    else if(b.type==='quote')preview='"'+(b.text||'').substring(0,80)+'…"';
-    else if(b.type==='table')preview='Table: '+(b.headers||[]).join(' | ');
-    else if(b.type==='callout')preview='['+b.style+'] '+(b.title||'');
-    return`<div class="block-item"><strong style="font-size:0.7rem;color:var(--text2);text-transform:uppercase">${b.type}</strong>
-      <button class="rm" onclick="removeBlock(${i})">✕</button>
-      <button class="rm" style="right:32px;background:var(--primary)" onclick="editBlock(${i})">✎</button>
-      <div class="block-preview">${preview||'(empty)'}</div></div>`;
-  }).join('');
-}
-
-function addContentBlock(){
-  const type=document.getElementById('fp-newtype').value;
-  openBlockEditor(type,null,-1);
-}
-
-function editBlock(idx){
-  openBlockEditor(window._postBlocks[idx].type,window._postBlocks[idx],idx);
-}
-
-function removeBlock(idx){
-  window._postBlocks.splice(idx,1);
-  renderBlocks();
-}
-
-function openBlockEditor(type,block,idx){
-  const b=block||{};
-  let fields='';
-  if(type==='paragraph'){
-    fields=`<div class="fg"><label>Text</label><textarea class="fc" id="fb-text" style="min-height:150px">${b.text||''}</textarea></div>`;
-  }else if(type==='heading'){
-    fields=`<div class="inline-row"><div class="fg"><label>Level (1-6)</label><select class="fc" id="fb-level">${[1,2,3,4,5,6].map(l=>`<option ${l===(b.level||2)?'selected':''}>${l}</option>`).join('')}</select></div></div>
-    <div class="fg"><label>Text</label><input class="fc" id="fb-text" value="${b.text||''}"></div>`;
-  }else if(type==='list'){
-    fields=`<div class="fg"><label>Style</label><select class="fc" id="fb-style"><option value="unordered" ${b.style!=='ordered'?'selected':''}>Unordered (bullets)</option><option value="ordered" ${b.style==='ordered'?'selected':''}>Ordered (numbers)</option></select></div>
-    <div class="fg"><label>Items (one per line)</label><textarea class="fc" id="fb-items" style="min-height:150px">${(b.items||[]).join('\n')}</textarea></div>`;
-  }else if(type==='quote'){
-    fields=`<div class="fg"><label>Quote Text</label><textarea class="fc" id="fb-text">${b.text||''}</textarea></div>
-    <div class="fg"><label>Source</label><input class="fc" id="fb-source" value="${b.source||''}"></div>`;
-  }else if(type==='table'){
-    fields=`<div class="fg"><label>Headers (comma separated)</label><input class="fc" id="fb-headers" value="${(b.headers||[]).join(', ')}"></div>
-    <div class="fg"><label>Rows (one row per line, columns separated by | )</label><textarea class="fc" id="fb-rows" style="min-height:150px">${(b.rows||[]).map(r=>r.join(' | ')).join('\n')}</textarea></div>
-    <div class="fg"><label>Caption</label><input class="fc" id="fb-caption" value="${b.caption||''}"></div>`;
-  }else if(type==='callout'){
-    fields=`<div class="fg"><label>Style</label><select class="fc" id="fb-style"><option value="info" ${b.style==='info'?'selected':''}>Info</option><option value="warning" ${b.style==='warning'?'selected':''}>Warning</option><option value="success" ${b.style==='success'?'selected':''}>Success</option><option value="error" ${b.style==='error'?'selected':''}>Error</option></select></div>
-    <div class="fg"><label>Title</label><input class="fc" id="fb-title" value="${b.title||''}"></div>
-    <div class="fg"><label>Text</label><textarea class="fc" id="fb-text">${b.text||''}</textarea></div>`;
-  }
-
-  // Render inline in the post form modal
-  const editorEl=document.getElementById('fp-block-editor');
-  const addBar=document.getElementById('fp-add-bar');
-  if(editorEl){
-    editorEl.style.display='block';
-    editorEl.innerHTML=`<div style="background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:16px;margin-top:12px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-        <strong style="font-size:0.85rem">${block?'Edit':'Add'} ${type.charAt(0).toUpperCase()+type.slice(1)}</strong>
-        <button type="button" class="btn btn-s btn-o" onclick="cancelBlockEditor()">✕ Cancel</button>
-      </div>
-      ${fields}
-      <button type="button" class="btn btn-s btn-p" style="margin-top:8px" onclick="saveBlock('${type}',${idx})">Save Block</button>
-    </div>`;
-  }
-  if(addBar)addBar.style.display='none';
-}
-
-function cancelBlockEditor(){
-  const editorEl=document.getElementById('fp-block-editor');
-  const addBar=document.getElementById('fp-add-bar');
-  if(editorEl){editorEl.style.display='none';editorEl.innerHTML='';}
-  if(addBar)addBar.style.display='flex';
-}
-
-function saveBlock(type,idx){
-  let block={type};
-  if(type==='paragraph'){block.text=document.getElementById('fb-text').value;}
-  else if(type==='heading'){block.level=parseInt(document.getElementById('fb-level').value);block.text=document.getElementById('fb-text').value;}
-  else if(type==='list'){block.style=document.getElementById('fb-style').value;block.items=document.getElementById('fb-items').value.split('\n').map(s=>s.trim()).filter(Boolean);}
-  else if(type==='quote'){block.text=document.getElementById('fb-text').value;block.source=document.getElementById('fb-source').value||undefined;}
-  else if(type==='table'){
-    block.headers=document.getElementById('fb-headers').value.split(',').map(s=>s.trim());
-    block.rows=document.getElementById('fb-rows').value.split('\n').filter(Boolean).map(line=>line.split('|').map(s=>s.trim()));
-    const cap=document.getElementById('fb-caption').value;if(cap)block.caption=cap;
-  }
-  else if(type==='callout'){block.style=document.getElementById('fb-style').value;block.title=document.getElementById('fb-title').value;block.text=document.getElementById('fb-text').value;}
-  
-  if(idx>=0)window._postBlocks[idx]=block;else window._postBlocks.push(block);
-  cancelBlockEditor();
-  renderBlocks();
-  toast('Block added!');
-}
-
-async function savePost(closeAfter){
+async function savePost(close){
   const id=document.getElementById('fp-id').value.trim();
   if(!id){toast('ID required','err');return;}
-  const row={
-    id,title:document.getElementById('fp-title').value,excerpt:document.getElementById('fp-excerpt').value,
-    category:document.getElementById('fp-cat').value,subtopic:document.getElementById('fp-sub').value||null,
-    author:document.getElementById('fp-author').value||null,published_date:document.getElementById('fp-date').value,
-    tags:document.getElementById('fp-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
-    featured_image_src:document.getElementById('fp-img').value,featured_image_alt:document.getElementById('fp-imgalt').value,
-    featured_image_caption:document.getElementById('fp-imgcap').value||null,
-    content:window._postBlocks||[],related_posts:document.getElementById('fp-related').value.split(',').map(t=>t.trim()).filter(Boolean)
-  };
-  const{error}=await dbUpsert('posts',row);
+  const row={id,title:document.getElementById('fp-title').value,excerpt:document.getElementById('fp-excerpt').value,category:document.getElementById('fp-cat').value,subtopic:document.getElementById('fp-sub').value||null,author:document.getElementById('fp-author').value||null,published_date:document.getElementById('fp-date').value,tags:document.getElementById('fp-tags').value.split(',').map(t=>t.trim()).filter(Boolean),featured_image_src:getUploadUrl('fp-img'),featured_image_alt:document.getElementById('fp-imgalt').value,featured_image_caption:document.getElementById('fp-imgcap').value||null,content:window._blocks||[],related_posts:document.getElementById('fp-related').value.split(',').map(t=>t.trim()).filter(Boolean)};
+  const{error}=await dbUp('posts',row);
   if(error){toast('Error: '+error.message,'err');return;}
   toast('Post saved!');
-  if(closeAfter){closeModal();loadPosts();return;}
-  // Stay in editor - make ID readonly since it's now saved
+  if(close){closeModal();loadPosts();return;}
   document.getElementById('fp-id').readOnly=true;
-  // Update modal title
-  const modalH2=document.querySelector('#modal h2');
-  if(modalH2)modalH2.textContent='Edit Post';
-  // Update buttons to show saved state
-  const actBar=document.querySelector('.modal-act');
-  if(actBar)actBar.innerHTML='<button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button><span style="color:var(--success);font-size:0.8rem;display:flex;align-items:center;gap:4px">✓ Saved</span>';
+  const h2=document.querySelector('#modal h2');if(h2)h2.textContent='Edit Post';
+  document.querySelector('.modal-act').innerHTML='<button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button><span style="color:var(--ok);font-size:.8rem;display:flex;align-items:center;gap:4px">✓ Saved</span>';
 }
 
 // ===== AUTHORS =====
-let authorsPage=1;
-async function loadAuthors(){authorsData=await dbAll('authors','name');authorsPage=1;renderAuthors();}
-function renderAuthors(){
-  const p=paginate(authorsData,authorsPage);
-  document.getElementById('tb-authors').innerHTML=p.items.length?p.items.map(a=>`<tr>
-    <td>${a.id}</td><td>${a.name}</td><td>${a.role||'-'}</td><td>${a.specialization||'-'}</td>
-    <td><button class="btn btn-s btn-o" onclick="editAuthor('${a.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delAuthor('${a.id}')">Del</button></td>
-  </tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--text2);padding:24px">No authors yet</td></tr>';
-  renderPag('pag-authors',p.page,p.totalPages,'gotoAuthors');
+let auPage=1;
+async function loadAuthors(){authorsD=await dbAll('authors','name');auPage=1;rAuthors();}
+function rAuthors(){
+  const p=pg(authorsD,auPage);
+  document.getElementById('tb-authors').innerHTML=p.items.length?p.items.map(a=>`<tr><td>${a.id}</td><td>${a.name}</td><td>${a.role||'-'}</td><td>${a.specialization||'-'}</td><td><button class="btn btn-s btn-o" onclick="editAu('${a.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delAu('${a.id}')">Del</button></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--t2);padding:24px">No authors yet</td></tr>';
+  rPag('pag-authors',p.p,p.tp,'gA');
 }
-function gotoAuthors(n){authorsPage=n;renderAuthors();}
-async function delAuthor(id){if(!confirm('Delete?'))return;await dbDel('authors',id);toast('Deleted');loadAuthors();}
-async function editAuthor(id){const a=await dbGet('authors',id);if(a)openAuthorForm(a);}
-function newAuthor(){openAuthorForm(null);}
-
-function openAuthorForm(a){
+function gA(n){auPage=n;rAuthors();}
+async function delAu(id){if(!confirm('Delete?'))return;await dbDel('authors',id);toast('Deleted');loadAuthors();}
+async function editAu(id){const a=await dbGet('authors',id);if(a)oAF(a);}
+function newAuthor(){oAF(null);}
+function oAF(a){
   const au=a||{};
   openModal(`<h2>${a?'Edit':'New'} Author</h2>
     <div class="fg"><label>ID</label><input class="fc" id="fa-id" value="${au.id||''}" ${a?'readonly':''} placeholder="e.g. ahmad-hassan"></div>
     <div class="fg"><label>Name</label><input class="fc" id="fa-name" value="${au.name||''}"></div>
-    <div class="fg"><label>Avatar URL</label><input class="fc" id="fa-avatar" value="${au.avatar||''}"></div>
+    ${uploadUI('fa-avatar','author-avatars','Avatar',au.avatar||'')}
     <div class="fg"><label>Bio</label><textarea class="fc" id="fa-bio">${au.bio||''}</textarea></div>
-    <div class="inline-row">
-      <div class="fg"><label>Role</label><input class="fc" id="fa-role" value="${au.role||''}"></div>
-      <div class="fg"><label>Specialization</label><input class="fc" id="fa-spec" value="${au.specialization||''}"></div>
-    </div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveAuthor()">Save</button></div>`);
+    <div class="inline-row"><div class="fg"><label>Role</label><input class="fc" id="fa-role" value="${au.role||''}"></div><div class="fg"><label>Specialization</label><input class="fc" id="fa-spec" value="${au.specialization||''}"></div></div>
+    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveAu()">Save</button></div>`);
 }
-
-async function saveAuthor(){
-  const row={id:document.getElementById('fa-id').value.trim(),name:document.getElementById('fa-name').value,avatar:document.getElementById('fa-avatar').value||null,bio:document.getElementById('fa-bio').value,role:document.getElementById('fa-role').value,specialization:document.getElementById('fa-spec').value};
+async function saveAu(){
+  const row={id:document.getElementById('fa-id').value.trim(),name:document.getElementById('fa-name').value,avatar:getUploadUrl('fa-avatar'),bio:document.getElementById('fa-bio').value,role:document.getElementById('fa-role').value,specialization:document.getElementById('fa-spec').value};
   if(!row.id||!row.name){toast('ID and Name required','err');return;}
-  const{error}=await dbUpsert('authors',row);
-  if(error){toast('Error: '+error.message,'err');return;}
+  const{error}=await dbUp('authors',row);if(error){toast('Error: '+error.message,'err');return;}
   toast('Author saved!');closeModal();loadAuthors();
 }
 
@@ -506,243 +403,136 @@ async function saveAuthor(){
 async function loadFeatured(){
   const[featured,posts]=await Promise.all([dbAll('featured','sort_order'),dbAll('posts','title')]);
   const fids=new Set(featured.map(f=>f.post_id));
-  document.getElementById('featured-list').innerHTML=posts.length?posts.map(p=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--border);cursor:pointer">
-    <input type="checkbox" ${fids.has(p.id)?'checked':''} onchange="toggleFeatured('${p.id}',this.checked)"> <span>${p.title}</span> <span class="tag">${p.category}</span>
-  </label>`).join(''):'<p style="color:var(--text2);padding:16px">No posts yet. Create posts first.</p>';
+  document.getElementById('featured-list').innerHTML=posts.length?posts.map(p=>`<label style="display:flex;align-items:center;gap:8px;padding:8px;border-bottom:1px solid var(--bd);cursor:pointer"><input type="checkbox" ${fids.has(p.id)?'checked':''} onchange="togFeat('${p.id}',this.checked)"> <span>${p.title}</span> <span class="tag">${p.category}</span></label>`).join(''):'<p style="color:var(--t2);padding:16px">No posts yet.</p>';
 }
-async function toggleFeatured(pid,on){
-  if(on){await db.from('featured').insert({post_id:pid,sort_order:0});}
-  else{await dbDel('featured',pid,'post_id');}
-  toast(on?'Added to featured':'Removed');
-}
+async function togFeat(pid,on){if(on)await db.from('featured').insert({post_id:pid,sort_order:0});else await dbDel('featured',pid,'post_id');toast(on?'Added':'Removed');}
 
 // ===== NAVIGATION =====
 async function loadNavigation(){
-  [catsData,subsData]=await Promise.all([dbAll('categories','sort_order'),dbAll('subtopics','sort_order')]);
-  const subMap={};subsData.forEach(s=>{if(!subMap[s.category_id])subMap[s.category_id]=[];subMap[s.category_id].push(s);});
-  const el=document.getElementById('nav-cats');
-  el.innerHTML=catsData.map(c=>{
-    const subs=subMap[c.id]||[];
-    return`<div class="card">
-      <div class="card-head"><h2>${c.title} <span class="tag">${c.id}</span> <span class="tag">${c.icon||'-'}</span></h2>
-        <div><button class="btn btn-s btn-o" onclick="editCat('${c.id}')">Edit</button> <button class="btn btn-s btn-p" onclick="newSub('${c.id}')">+ Subtopic</button></div></div>
-      <div style="margin-top:8px">${subs.length?subs.map(s=>`<span class="sub-chip">${s.title} <button onclick="delSub('${s.id}')">✕</button></span>`).join(''):'<span style="color:var(--text2);font-size:0.8rem">No subtopics</span>'}</div>
-    </div>`;
+  [catsD,subsD]=await Promise.all([dbAll('categories','sort_order'),dbAll('subtopics','sort_order')]);
+  const sm={};subsD.forEach(s=>{if(!sm[s.category_id])sm[s.category_id]=[];sm[s.category_id].push(s);});
+  document.getElementById('nav-cats').innerHTML=catsD.map(c=>{
+    const subs=sm[c.id]||[];
+    const locked=c.system_locked;
+    return`<div class="card"><div class="card-head"><h2>${c.title} <span class="tag">${c.id}</span> <span class="tag">${c.icon||'-'}</span>${locked?' <span class="tag tag-lock">🔒 System</span>':''}</h2>
+      <div>${locked?'':'<button class="btn btn-s btn-o" onclick="editCat(\''+c.id+'\')">Edit</button>'} <button class="btn btn-s btn-p" onclick="newSub('${c.id}')">+ Subtopic</button></div></div>
+      <div style="margin-top:8px">${subs.length?subs.map(s=>`<span class="sub-chip">${s.title}${s.system_locked?' 🔒':''} ${s.system_locked?'':'<button onclick="delSub(\''+s.id+'\')">✕</button>'}</span>`).join(''):'<span style="color:var(--t2);font-size:.8rem">No subtopics</span>'}</div></div>`;
   }).join('');
 }
-
-function editCat(id){const c=catsData.find(x=>x.id===id);if(!c)return;
-  openModal(`<h2>Edit Category</h2>
-    <div class="fg"><label>ID</label><input class="fc" value="${c.id}" readonly></div>
-    <div class="fg"><label>Title</label><input class="fc" id="ec-title" value="${c.title}"></div>
-    <div class="fg"><label>Icon</label><input class="fc" id="ec-icon" value="${c.icon||''}" placeholder="briefcase, bank, balance, book, info"></div>
-    <div class="fg"><label>Description</label><input class="fc" id="ec-desc" value="${c.description||''}"></div>
-    <div class="fg"><label>Sort Order</label><input class="fc" type="number" id="ec-sort" value="${c.sort_order||0}"></div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveCat('${c.id}')">Save</button></div>`);
+function editCat(id){const c=catsD.find(x=>x.id===id);if(!c||c.system_locked){toast('This category is locked','err');return;}
+  openModal(`<h2>Edit Category</h2><div class="fg"><label>ID</label><input class="fc" value="${c.id}" readonly></div><div class="fg"><label>Title</label><input class="fc" id="ec-title" value="${c.title}"></div><div class="fg"><label>Icon</label><input class="fc" id="ec-icon" value="${c.icon||''}"></div><div class="fg"><label>Description</label><input class="fc" id="ec-desc" value="${c.description||''}"></div><div class="fg"><label>Sort</label><input class="fc" type="number" id="ec-sort" value="${c.sort_order||0}"></div><div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveCat('${c.id}')">Save</button></div>`);
 }
-async function saveCat(id){
-  const row={id,title:document.getElementById('ec-title').value,icon:document.getElementById('ec-icon').value,description:document.getElementById('ec-desc').value,sort_order:parseInt(document.getElementById('ec-sort').value)||0};
-  const{error}=await dbUpsert('categories',row);
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('Category saved!');closeModal();loadNavigation();
-}
-
-function newSub(catId){
-  openModal(`<h2>New Subtopic for ${catId}</h2>
-    <div class="fg"><label>ID</label><input class="fc" id="ns-id" placeholder="e.g. leadership"></div>
-    <div class="fg"><label>Title</label><input class="fc" id="ns-title"></div>
-    <div class="fg"><label>Description</label><input class="fc" id="ns-desc"></div>
-    <div class="inline-row">
-      <div class="fg"><label>Type</label><select class="fc" id="ns-type"><option value="blog">Blog</option><option value="page">Page</option></select></div>
-      <div class="fg"><label>Page URL (if page type)</label><input class="fc" id="ns-page" placeholder="/downloads"></div>
-      <div class="fg"><label>Sort Order</label><input class="fc" type="number" id="ns-sort" value="0"></div>
-    </div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveSub('${catId}')">Save</button></div>`);
-}
-async function saveSub(catId){
-  const row={id:document.getElementById('ns-id').value.trim(),category_id:catId,title:document.getElementById('ns-title').value,description:document.getElementById('ns-desc').value,type:document.getElementById('ns-type').value,page:document.getElementById('ns-page').value||null,sort_order:parseInt(document.getElementById('ns-sort').value)||0};
-  if(!row.id||!row.title){toast('ID and Title required','err');return;}
-  const{error}=await dbUpsert('subtopics',row);
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('Subtopic added!');closeModal();loadNavigation();
-}
-async function delSub(id){if(!confirm('Delete subtopic?'))return;await dbDel('subtopics',id);toast('Deleted');loadNavigation();}
+async function saveCat(id){const row={id,title:document.getElementById('ec-title').value,icon:document.getElementById('ec-icon').value,description:document.getElementById('ec-desc').value,sort_order:parseInt(document.getElementById('ec-sort').value)||0};const{error}=await dbUp('categories',row);if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');closeModal();loadNavigation();}
+function newSub(catId){openModal(`<h2>New Subtopic for ${catId}</h2><div class="fg"><label>ID</label><input class="fc" id="ns-id"></div><div class="fg"><label>Title</label><input class="fc" id="ns-title"></div><div class="fg"><label>Description</label><input class="fc" id="ns-desc"></div><div class="inline-row"><div class="fg"><label>Type</label><select class="fc" id="ns-type"><option value="blog">Blog</option><option value="page">Page</option></select></div><div class="fg"><label>Page URL</label><input class="fc" id="ns-page"></div><div class="fg"><label>Sort</label><input class="fc" type="number" id="ns-sort" value="0"></div></div><div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveSub('${catId}')">Save</button></div>`);}
+async function saveSub(catId){const row={id:document.getElementById('ns-id').value.trim(),category_id:catId,title:document.getElementById('ns-title').value,description:document.getElementById('ns-desc').value,type:document.getElementById('ns-type').value,page:document.getElementById('ns-page').value||null,sort_order:parseInt(document.getElementById('ns-sort').value)||0};if(!row.id||!row.title){toast('ID and Title required','err');return;}const{error}=await dbUp('subtopics',row);if(error){toast('Error: '+error.message,'err');return;}toast('Added!');closeModal();loadNavigation();}
+async function delSub(id){const sub=subsD.find(s=>s.id===id);if(sub?.system_locked){toast('This subtopic is locked','err');return;}if(!confirm('Delete?'))return;await dbDel('subtopics',id);toast('Deleted');loadNavigation();}
 
 // ===== DOWNLOADS =====
-let dlPage=1;
-async function loadDownloads(){downloadsData=await dbAll('downloads','name');dlPage=1;renderDownloads();}
-let downloadsData=[];
-function renderDownloads(){
-  const p=paginate(downloadsData,dlPage);
-  document.getElementById('tb-downloads').innerHTML=p.items.length?p.items.map(d=>`<tr>
-    <td>${d.name}</td><td>${d.format||'-'}</td><td>${d.size||'-'}</td>
-    <td><button class="btn btn-s btn-o" onclick="editDl('${d.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delDl('${d.id}')">Del</button></td>
-  </tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:24px">No downloads yet</td></tr>';
-  renderPag('pag-downloads',p.page,p.totalPages,'gotoDl');
+let dlD=[],dlPage=1;
+async function loadDownloads(){dlD=await dbAll('downloads','name');dlPage=1;rDownloads();}
+function rDownloads(){
+  const p=pg(dlD,dlPage);
+  document.getElementById('tb-downloads').innerHTML=p.items.length?p.items.map(d=>`<tr><td>${d.name}</td><td>${d.format||'-'}</td><td>${d.size||'-'}</td><td>${d.system_locked?'🔒':'—'}</td><td>${d.system_locked?'<span style="color:var(--t2);font-size:.75rem">Locked</span>':'<button class="btn btn-s btn-o" onclick="editDl(\''+d.id+'\')">Edit</button> <button class="btn btn-s btn-d" onclick="delDl(\''+d.id+'\')">Del</button>'}</td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--t2);padding:24px">No downloads yet</td></tr>';
+  rPag('pag-downloads',p.p,p.tp,'gD');
 }
-function gotoDl(n){dlPage=n;renderDownloads();}
+function gD(n){dlPage=n;rDownloads();}
 async function delDl(id){if(!confirm('Delete?'))return;await dbDel('downloads',id);toast('Deleted');loadDownloads();}
-async function editDl(id){const d=await dbGet('downloads',id);if(d)openDlForm(d);}
-function newDownload(){openDlForm(null);}
-
-function openDlForm(d){
+async function editDl(id){const d=await dbGet('downloads',id);if(d?.system_locked){toast('This item is locked','err');return;}if(d)oDF(d);}
+function newDownload(){oDF(null);}
+function oDF(d){
   const dl=d||{};
   openModal(`<h2>${d?'Edit':'New'} Download</h2>
     <div class="fg"><label>ID</label><input class="fc" id="fd-id" value="${dl.id||''}" ${d?'readonly':''}></div>
     <div class="fg"><label>Name</label><input class="fc" id="fd-name" value="${dl.name||''}"></div>
     <div class="fg"><label>Description</label><textarea class="fc" id="fd-desc">${dl.description||''}</textarea></div>
-    <div class="inline-row">
-      <div class="fg"><label>Format</label><select class="fc" id="fd-format"><option ${dl.format==='pdf'?'selected':''}>pdf</option><option ${dl.format==='xlsx'?'selected':''}>xlsx</option><option ${dl.format==='docx'?'selected':''}>docx</option><option ${dl.format==='pptx'?'selected':''}>pptx</option></select></div>
-      <div class="fg"><label>Size</label><input class="fc" id="fd-size" value="${dl.size||''}" placeholder="e.g. 1.2 MB"></div>
-      <div class="fg"><label>Version</label><input class="fc" id="fd-ver" value="${dl.version||''}"></div>
-    </div>
-    <div class="inline-row">
-      <div class="fg"><label>Download URL</label><input class="fc" id="fd-url" value="${dl.download_url||''}"></div>
-      <div class="fg"><label>Thumbnail URL</label><input class="fc" id="fd-img" value="${dl.image||''}"></div>
-    </div>
+    <div class="inline-row"><div class="fg"><label>Format</label><select class="fc" id="fd-format"><option ${dl.format==='pdf'?'selected':''}>pdf</option><option ${dl.format==='xlsx'?'selected':''}>xlsx</option><option ${dl.format==='docx'?'selected':''}>docx</option><option ${dl.format==='pptx'?'selected':''}>pptx</option></select></div><div class="fg"><label>Size</label><input class="fc" id="fd-size" value="${dl.size||''}"></div><div class="fg"><label>Version</label><input class="fc" id="fd-ver" value="${dl.version||''}"></div></div>
+    ${uploadUI('fd-file','download-files','Download File',dl.download_url||'')}
+    ${uploadUI('fd-img','download-thumbnails','Thumbnail Image',dl.image||'')}
     <div class="fg"><label>Tags (comma separated)</label><input class="fc" id="fd-tags" value="${(dl.tags||[]).join(', ')}"></div>
     <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveDl()">Save</button></div>`);
 }
 async function saveDl(){
-  const row={id:document.getElementById('fd-id').value.trim(),name:document.getElementById('fd-name').value,description:document.getElementById('fd-desc').value,format:document.getElementById('fd-format').value,size:document.getElementById('fd-size').value,version:document.getElementById('fd-ver').value,download_url:document.getElementById('fd-url').value,image:document.getElementById('fd-img').value||null,tags:document.getElementById('fd-tags').value.split(',').map(t=>t.trim()).filter(Boolean),last_updated:new Date().toISOString().split('T')[0]};
+  const row={id:document.getElementById('fd-id').value.trim(),name:document.getElementById('fd-name').value,description:document.getElementById('fd-desc').value,format:document.getElementById('fd-format').value,size:document.getElementById('fd-size').value,version:document.getElementById('fd-ver').value,download_url:getUploadUrl('fd-file'),image:getUploadUrl('fd-img')||null,tags:document.getElementById('fd-tags').value.split(',').map(t=>t.trim()).filter(Boolean),last_updated:new Date().toISOString().split('T')[0]};
   if(!row.id||!row.name){toast('ID and Name required','err');return;}
-  const{error}=await dbUpsert('downloads',row);
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('Download saved!');closeModal();loadDownloads();
+  const{error}=await dbUp('downloads',row);if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');closeModal();loadDownloads();
 }
 
 // ===== FAQs =====
-let faqPage=1,faqCatsData=[];
-async function loadFaqs(){[faqsData,faqCatsData]=await Promise.all([dbAll('faqs','sort_order'),dbAll('faq_categories','sort_order')]);faqPage=1;renderFaqs();}
-let faqsData=[];
-function renderFaqs(){
-  const p=paginate(faqsData,faqPage);
-  const cmap={};faqCatsData.forEach(c=>cmap[c.id]=c.category);
-  document.getElementById('tb-faqs').innerHTML=p.items.length?p.items.map(f=>`<tr>
-    <td>${f.question.substring(0,60)}${f.question.length>60?'…':''}</td><td>${cmap[f.category_id]||f.category_id}</td>
-    <td><button class="btn btn-s btn-o" onclick="editFaq('${f.id}')">Edit</button> <button class="btn btn-s btn-d" onclick="delFaq('${f.id}')">Del</button></td>
-  </tr>`).join(''):'<tr><td colspan="3" style="text-align:center;color:var(--text2);padding:24px">No FAQs yet</td></tr>';
-  renderPag('pag-faqs',p.page,p.totalPages,'gotoFaqs');
+let faqD=[],faqCD=[],faqPage=1;
+async function loadFaqs(){[faqD,faqCD]=await Promise.all([dbAll('faqs','sort_order'),dbAll('faq_categories','sort_order')]);faqPage=1;rFaqs();}
+function rFaqs(){
+  const p=pg(faqD,faqPage),cm={};faqCD.forEach(c=>cm[c.id]=c.category);
+  document.getElementById('tb-faqs').innerHTML=p.items.length?p.items.map(f=>`<tr><td>${f.question.substring(0,50)}${f.question.length>50?'…':''}</td><td>${cm[f.category_id]||f.category_id}</td><td>${f.system_locked?'🔒':'—'}</td><td>${f.system_locked?'<span style="color:var(--t2);font-size:.75rem">Locked</span>':'<button class="btn btn-s btn-o" onclick="editFaq(\''+f.id+'\')">Edit</button> <button class="btn btn-s btn-d" onclick="delFaq(\''+f.id+'\')">Del</button>'}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--t2);padding:24px">No FAQs yet</td></tr>';
+  rPag('pag-faqs',p.p,p.tp,'gF');
 }
-function gotoFaqs(n){faqPage=n;renderFaqs();}
+function gF(n){faqPage=n;rFaqs();}
 async function delFaq(id){if(!confirm('Delete?'))return;await dbDel('faqs',id);toast('Deleted');loadFaqs();}
-async function editFaq(id){const f=await dbGet('faqs',id);if(f)openFaqForm(f);}
-function newFaq(){openFaqForm(null);}
-
-function openFaqForm(f){
-  const faq=f||{};
-  const catOpts=faqCatsData.map(c=>`<option value="${c.id}" ${faq.category_id===c.id?'selected':''}>${c.category}</option>`).join('');
-  openModal(`<h2>${f?'Edit':'New'} FAQ</h2>
-    <div class="inline-row">
-      <div class="fg"><label>ID</label><input class="fc" id="ff-id" value="${faq.id||''}" ${f?'readonly':''}></div>
-      <div class="fg"><label>Category</label><select class="fc" id="ff-cat"><option value="">Select…</option>${catOpts}</select></div>
-      <div class="fg"><label>Sort Order</label><input class="fc" type="number" id="ff-sort" value="${faq.sort_order||0}"></div>
-    </div>
-    <div class="fg"><label>Question</label><input class="fc" id="ff-q" value="${faq.question||''}"></div>
-    <div class="fg"><label>Answer</label><textarea class="fc" id="ff-a" style="min-height:120px">${faq.answer||''}</textarea></div>
-    <div class="fg"><label>Tags (comma separated)</label><input class="fc" id="ff-tags" value="${(faq.tags||[]).join(', ')}"></div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveFaq()">Save</button></div>`);
+async function editFaq(id){const f=await dbGet('faqs',id);if(f?.system_locked){toast('Locked','err');return;}if(f)oFF(f);}
+function newFaq(){oFF(null);}
+function oFF(f){
+  const faq=f||{};const catO=faqCD.map(c=>`<option value="${c.id}" ${faq.category_id===c.id?'selected':''}>${c.category}</option>`).join('');
+  openModal(`<h2>${f?'Edit':'New'} FAQ</h2><div class="inline-row"><div class="fg"><label>ID</label><input class="fc" id="ff-id" value="${faq.id||''}" ${f?'readonly':''}></div><div class="fg"><label>Category</label><select class="fc" id="ff-cat"><option value="">Select…</option>${catO}</select></div><div class="fg"><label>Sort</label><input class="fc" type="number" id="ff-sort" value="${faq.sort_order||0}"></div></div><div class="fg"><label>Question</label><input class="fc" id="ff-q" value="${faq.question||''}"></div><div class="fg"><label>Answer</label><textarea class="fc" id="ff-a" style="min-height:120px">${faq.answer||''}</textarea></div><div class="fg"><label>Tags</label><input class="fc" id="ff-tags" value="${(faq.tags||[]).join(', ')}"></div><div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveFaq()">Save</button></div>`);
 }
-async function saveFaq(){
-  const row={id:document.getElementById('ff-id').value.trim(),category_id:parseInt(document.getElementById('ff-cat').value),question:document.getElementById('ff-q').value,answer:document.getElementById('ff-a').value,tags:document.getElementById('ff-tags').value.split(',').map(t=>t.trim()).filter(Boolean),sort_order:parseInt(document.getElementById('ff-sort').value)||0};
-  if(!row.id||!row.question||!row.answer){toast('ID, Question, Answer required','err');return;}
-  if(!row.category_id){toast('Select a category','err');return;}
-  const{error}=await dbUpsert('faqs',row);
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('FAQ saved!');closeModal();loadFaqs();
-}
-
-function newFaqCat(){
-  openModal(`<h2>New FAQ Category</h2>
-    <div class="fg"><label>Category Name</label><input class="fc" id="fc-name"></div>
-    <div class="fg"><label>Sort Order</label><input class="fc" type="number" id="fc-sort" value="0"></div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveFaqCat()">Save</button></div>`);
-}
-async function saveFaqCat(){
-  const name=document.getElementById('fc-name').value.trim();
-  if(!name){toast('Name required','err');return;}
-  const{error}=await db.from('faq_categories').insert({category:name,sort_order:parseInt(document.getElementById('fc-sort').value)||0});
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('Category saved!');closeModal();loadFaqs();
-}
+async function saveFaq(){const row={id:document.getElementById('ff-id').value.trim(),category_id:parseInt(document.getElementById('ff-cat').value),question:document.getElementById('ff-q').value,answer:document.getElementById('ff-a').value,tags:document.getElementById('ff-tags').value.split(',').map(t=>t.trim()).filter(Boolean),sort_order:parseInt(document.getElementById('ff-sort').value)||0};if(!row.id||!row.question||!row.answer||!row.category_id){toast('All fields required','err');return;}const{error}=await dbUp('faqs',row);if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');closeModal();loadFaqs();}
+function newFaqCat(){openModal(`<h2>New FAQ Category</h2><div class="fg"><label>Name</label><input class="fc" id="fc-name"></div><div class="fg"><label>Sort</label><input class="fc" type="number" id="fc-sort" value="0"></div><div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveFaqCat()">Save</button></div>`);}
+async function saveFaqCat(){const n=document.getElementById('fc-name').value.trim();if(!n){toast('Name required','err');return;}const{error}=await db.from('faq_categories').insert({category:n,sort_order:parseInt(document.getElementById('fc-sort').value)||0});if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');closeModal();loadFaqs();}
 
 // ===== GLOSSARY =====
-let glossPage=1,glossData=[];
-async function loadGlossary(){glossData=await dbAll('glossary','term');glossPage=1;renderGlossary();}
-function renderGlossary(){
-  const p=paginate(glossData,glossPage);
-  document.getElementById('tb-glossary').innerHTML=p.items.length?p.items.map(g=>`<tr>
-    <td>${g.term}</td><td>${g.arabic||'-'}</td><td>${g.category||'-'}</td>
-    <td><button class="btn btn-s btn-o" onclick="editGloss(${g.id})">Edit</button> <button class="btn btn-s btn-d" onclick="delGloss(${g.id})">Del</button></td>
-  </tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:var(--text2);padding:24px">No glossary terms yet</td></tr>';
-  renderPag('pag-glossary',p.page,p.totalPages,'gotoGloss');
+let glossD=[],glossPage=1;
+async function loadGlossary(){glossD=await dbAll('glossary','term');glossPage=1;rGloss();}
+function rGloss(){
+  const p=pg(glossD,glossPage);
+  document.getElementById('tb-glossary').innerHTML=p.items.length?p.items.map(g=>`<tr><td>${g.term}</td><td>${g.arabic||'-'}</td><td>${g.category||'-'}</td><td>${g.system_locked?'🔒':'—'}</td><td>${g.system_locked?'<span style="color:var(--t2);font-size:.75rem">Locked</span>':'<button class="btn btn-s btn-o" onclick="editGloss(${g.id})">Edit</button> <button class="btn btn-s btn-d" onclick="delGloss(${g.id})">Del</button>'}</td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--t2);padding:24px">No terms yet</td></tr>';
+  rPag('pag-glossary',p.p,p.tp,'gG');
 }
-function gotoGloss(n){glossPage=n;renderGlossary();}
+function gG(n){glossPage=n;rGloss();}
 async function delGloss(id){if(!confirm('Delete?'))return;await db.from('glossary').delete().eq('id',id);toast('Deleted');loadGlossary();}
-async function editGloss(id){const{data}=await db.from('glossary').select('*').eq('id',id).single();if(data)openGlossForm(data);}
-function newGlossary(){openGlossForm(null);}
-
-function openGlossForm(g){
+async function editGloss(id){const{data}=await db.from('glossary').select('*').eq('id',id).single();if(data?.system_locked){toast('Locked','err');return;}if(data)oGF(data);}
+function newGlossary(){oGF(null);}
+function oGF(g){
   const gl=g||{};
-  openModal(`<h2>${g?'Edit':'New'} Glossary Term</h2>
-    <div class="inline-row">
-      <div class="fg"><label>Term</label><input class="fc" id="fg-term" value="${gl.term||''}"></div>
-      <div class="fg"><label>Arabic</label><input class="fc" id="fg-arabic" value="${gl.arabic||''}"></div>
-    </div>
-    <div class="inline-row">
-      <div class="fg"><label>Pronunciation</label><input class="fc" id="fg-pron" value="${gl.pronunciation||''}"></div>
-      <div class="fg"><label>Category</label><input class="fc" id="fg-cat" value="${gl.category||''}"></div>
-    </div>
-    <div class="fg"><label>Definition</label><textarea class="fc" id="fg-def">${gl.definition||''}</textarea></div>
-    <div class="fg"><label>Related Terms (comma separated)</label><input class="fc" id="fg-related" value="${(gl.related_terms||[]).join(', ')}"></div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveGloss(${g?g.id:'null'})">Save</button></div>`);
+  openModal(`<h2>${g?'Edit':'New'} Term</h2><div class="inline-row"><div class="fg"><label>Term</label><input class="fc" id="fg-term" value="${gl.term||''}"></div><div class="fg"><label>Arabic</label><input class="fc" id="fg-arabic" value="${gl.arabic||''}"></div></div><div class="inline-row"><div class="fg"><label>Pronunciation</label><input class="fc" id="fg-pron" value="${gl.pronunciation||''}"></div><div class="fg"><label>Category</label><input class="fc" id="fg-cat" value="${gl.category||''}"></div></div><div class="fg"><label>Definition</label><textarea class="fc" id="fg-def">${gl.definition||''}</textarea></div><div class="fg"><label>Related Terms</label><input class="fc" id="fg-related" value="${(gl.related_terms||[]).join(', ')}"></div><div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="saveGloss(${g?g.id:'null'})">Save</button></div>`);
 }
-async function saveGloss(existingId){
-  const row={term:document.getElementById('fg-term').value,arabic:document.getElementById('fg-arabic').value||null,pronunciation:document.getElementById('fg-pron').value||null,definition:document.getElementById('fg-def').value,category:document.getElementById('fg-cat').value||null,related_terms:document.getElementById('fg-related').value.split(',').map(t=>t.trim()).filter(Boolean)};
-  if(!row.term||!row.definition){toast('Term and Definition required','err');return;}
-  const r=existingId?await db.from('glossary').update(row).eq('id',existingId):await db.from('glossary').insert(row);
-  if(r.error){toast('Error: '+r.error.message,'err');return;}
-  toast('Term saved!');closeModal();loadGlossary();
-}
+async function saveGloss(eid){const row={term:document.getElementById('fg-term').value,arabic:document.getElementById('fg-arabic').value||null,pronunciation:document.getElementById('fg-pron').value||null,definition:document.getElementById('fg-def').value,category:document.getElementById('fg-cat').value||null,related_terms:document.getElementById('fg-related').value.split(',').map(t=>t.trim()).filter(Boolean)};if(!row.term||!row.definition){toast('Term and Definition required','err');return;}const r=eid?await db.from('glossary').update(row).eq('id',eid):await db.from('glossary').insert(row);if(r.error){toast('Error: '+r.error.message,'err');return;}toast('Saved!');closeModal();loadGlossary();}
 
 // ===== ABOUT =====
-async function loadAbout(){
-  const{data}=await db.from('about').select('*').eq('id',1).single();
-  if(!data)return;
-  const m=data.mission||{};const v=data.vision||{};
-  document.getElementById('about-form').innerHTML=`
-    <div class="fg"><label>Title</label><input class="fc" id="ab-title" value="${data.title||''}"></div>
-    <div class="fg"><label>Subtitle</label><input class="fc" id="ab-subtitle" value="${data.subtitle||''}"></div>
-    <div class="fg"><label>Description</label><textarea class="fc" id="ab-desc">${data.description||''}</textarea></div>
-    <div class="inline-row"><div class="fg"><label>Mission Title</label><input class="fc" id="ab-mt" value="${m.title||''}"></div><div class="fg"><label>Vision Title</label><input class="fc" id="ab-vt" value="${v.title||''}"></div></div>
-    <div class="fg"><label>Mission Content</label><textarea class="fc" id="ab-mc">${m.content||''}</textarea></div>
-    <div class="fg"><label>Vision Content</label><textarea class="fc" id="ab-vc">${v.content||''}</textarea></div>
-    <button class="btn btn-p" onclick="saveAbout()">Save About</button>`;
+async function loadAbout(){const{data}=await db.from('about').select('*').eq('id',1).single();if(!data)return;const m=data.mission||{};const v=data.vision||{};
+  document.getElementById('about-form').innerHTML=`<div class="fg"><label>Title</label><input class="fc" id="ab-title" value="${data.title||''}"></div><div class="fg"><label>Subtitle</label><input class="fc" id="ab-sub" value="${data.subtitle||''}"></div><div class="fg"><label>Description</label><textarea class="fc" id="ab-desc">${data.description||''}</textarea></div><div class="inline-row"><div class="fg"><label>Mission Title</label><input class="fc" id="ab-mt" value="${m.title||''}"></div><div class="fg"><label>Vision Title</label><input class="fc" id="ab-vt" value="${v.title||''}"></div></div><div class="fg"><label>Mission</label><textarea class="fc" id="ab-mc">${m.content||''}</textarea></div><div class="fg"><label>Vision</label><textarea class="fc" id="ab-vc">${v.content||''}</textarea></div><button class="btn btn-p" onclick="saveAbout()">Save</button>`;}
+async function saveAbout(){const row={id:1,title:document.getElementById('ab-title').value,subtitle:document.getElementById('ab-sub').value,description:document.getElementById('ab-desc').value,mission:{title:document.getElementById('ab-mt').value,content:document.getElementById('ab-mc').value},vision:{title:document.getElementById('ab-vt').value,content:document.getElementById('ab-vc').value}};const{error}=await dbUp('about',row);if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');}
+
+// ===== MESSAGES =====
+let msgD=[],msgPage=1;
+async function loadMessages(){msgD=await dbAll('contact_messages','created_at',false);msgPage=1;rMsgs();}
+function rMsgs(){
+  const p=pg(msgD,msgPage);
+  document.getElementById('tb-messages').innerHTML=p.items.length?p.items.map(m=>{
+    const d=new Date(m.created_at).toLocaleString();
+    return`<tr class="${m.is_read?'':'msg-unread'}"><td>${m.name}</td><td>${m.email}</td><td style="max-width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.message}</td><td style="white-space:nowrap">${d}</td><td>${m.is_read?'<span class="tag">Read</span>':'<span class="badge badge-new">New</span>'}</td><td>${m.is_read?'':'<button class="btn btn-s btn-o" onclick="markRead(${m.id})">Mark Read</button>'} <button class="btn btn-s btn-d" onclick="delMsg(${m.id})">Del</button></td></tr>`;
+  }).join(''):'<tr><td colspan="6" style="text-align:center;color:var(--t2);padding:24px">No messages yet</td></tr>';
+  rPag('pag-messages',p.p,p.tp,'gM');
 }
-async function saveAbout(){
-  const row={id:1,title:document.getElementById('ab-title').value,subtitle:document.getElementById('ab-subtitle').value,description:document.getElementById('ab-desc').value,mission:{title:document.getElementById('ab-mt').value,content:document.getElementById('ab-mc').value},vision:{title:document.getElementById('ab-vt').value,content:document.getElementById('ab-vc').value}};
-  const{error}=await dbUpsert('about',row);
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('About saved!');
+function gM(n){msgPage=n;rMsgs();}
+async function markRead(id){await db.from('contact_messages').update({is_read:true}).eq('id',id);toast('Marked as read');loadMessages();}
+async function delMsg(id){if(!confirm('Delete?'))return;await dbDel('contact_messages',id,'id');toast('Deleted');loadMessages();}
+
+// ===== SUBSCRIBERS =====
+let subD=[],subPage=1;
+async function loadSubscribers(){subD=await dbAll('newsletter_subscribers','created_at',false);subPage=1;rSubs();}
+function rSubs(){
+  const p=pg(subD,subPage);
+  document.getElementById('tb-subscribers').innerHTML=p.items.length?p.items.map(s=>{
+    const d=new Date(s.created_at).toLocaleDateString();
+    return`<tr><td>${s.name}</td><td>${s.email}</td><td>${d}</td><td>${s.is_active?'<span class="tag" style="background:#dcfce7;color:#166534">Active</span>':'<span class="tag">Inactive</span>'}</td><td><button class="btn btn-s btn-d" onclick="delSub2(${s.id})">Del</button></td></tr>`;
+  }).join(''):'<tr><td colspan="5" style="text-align:center;color:var(--t2);padding:24px">No subscribers yet</td></tr>';
+  rPag('pag-subscribers',p.p,p.tp,'gS');
 }
+function gS(n){subPage=n;rSubs();}
+async function delSub2(id){if(!confirm('Delete?'))return;await dbDel('newsletter_subscribers',id,'id');toast('Deleted');loadSubscribers();}
 
 // ===== SETTINGS =====
-async function loadSettings(){
-  const{data}=await db.from('settings').select('value').eq('key','app').single();
-  const v=data?.value||{};
-  document.getElementById('settings-form').innerHTML=`
-    <div class="fg"><label>Site Name</label><input class="fc" id="st-name" value="${v.name||''}"></div>
-    <div class="fg"><label>Copyright</label><input class="fc" id="st-copy" value="${v.copyright||''}"></div>
-    <div class="fg"><label>Contact Email</label><input class="fc" id="st-email" value="${v.email||''}"></div>
-    <div class="fg"><label>Web3Forms Access Key</label><input class="fc" id="st-w3f" value="${v.web3formsAccessKey||''}"></div>
-    <button class="btn btn-p" onclick="saveSettings()">Save Settings</button>`;
-}
-async function saveSettings(){
-  const val={name:document.getElementById('st-name').value,copyright:document.getElementById('st-copy').value,email:document.getElementById('st-email').value,web3formsAccessKey:document.getElementById('st-w3f').value};
-  const{error}=await dbUpsert('settings',{key:'app',value:val});
-  if(error){toast('Error: '+error.message,'err');return;}
-  toast('Settings saved!');
-}
+async function loadSettings(){const{data}=await db.from('settings').select('value').eq('key','app').single();const v=data?.value||{};
+  document.getElementById('settings-form').innerHTML=`<div class="fg"><label>Site Name</label><input class="fc" id="st-name" value="${v.name||''}"></div><div class="fg"><label>Copyright</label><input class="fc" id="st-copy" value="${v.copyright||''}"></div><div class="fg"><label>Contact Email</label><input class="fc" id="st-email" value="${v.email||''}"></div><div class="fg"><label>Web3Forms Key</label><input class="fc" id="st-w3f" value="${v.web3formsAccessKey||''}"></div><button class="btn btn-p" onclick="saveSettings()">Save</button>`;}
+async function saveSettings(){const val={name:document.getElementById('st-name').value,copyright:document.getElementById('st-copy').value,email:document.getElementById('st-email').value,web3formsAccessKey:document.getElementById('st-w3f').value};const{error}=await dbUp('settings',{key:'app',value:val});if(error){toast('Error: '+error.message,'err');return;}toast('Saved!');}
 </script>
 </body>
 </html>
