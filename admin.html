@@ -64,12 +64,28 @@
     .inline-row .fg{flex:1}
     .sub-chip{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:#e2e8f0;border-radius:20px;font-size:0.75rem;margin:3px}
     .sub-chip button{background:var(--danger);color:#fff;border:none;border-radius:50%;width:16px;height:16px;font-size:0.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    @media(max-width:768px){.sidebar{display:none}.main{margin-left:0}}
+    .mobile-toggle{display:none;position:fixed;top:12px;left:12px;z-index:1001;background:#0f172a;color:#fff;border:none;border-radius:8px;width:40px;height:40px;font-size:1.2rem;cursor:pointer;align-items:center;justify-content:center}
+    .sidebar-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:99}
+    @media(max-width:768px){
+      .mobile-toggle{display:flex}
+      .sidebar{transform:translateX(-100%);transition:.3s;z-index:100}
+      .sidebar.open{transform:translateX(0)}
+      .sidebar-overlay.open{display:block}
+      .main{margin-left:0;padding:16px;padding-top:60px}
+      .inline-row{flex-direction:column}
+      .modal{padding:20px}
+      .modal-bg{padding:16px 8px}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .header h1{font-size:1.1rem}
+      table{font-size:0.75rem}th,td{padding:8px 6px}
+    }
   </style>
 </head>
 <body>
+<button class="mobile-toggle" id="mobile-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
 <div class="layout">
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand"><h2>Finance ISL</h2><small>Admin Panel</small></div>
     <button class="nav-link active" onclick="go('dashboard',this)">📊 Dashboard</button>
     <button class="nav-link" onclick="go('posts',this)">📝 Blog Posts</button>
@@ -164,11 +180,19 @@
 // ===== CORE =====
 let db=null,PAGE_SIZE=10,pages={};
 
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebar-overlay').classList.toggle('open');
+}
+
 function go(name,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-link').forEach(n=>n.classList.remove('active'));
   document.getElementById('pg-'+name).classList.add('active');
   if(el)el.classList.add('active');
+  // Close sidebar on mobile after navigation
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
   const loaders={dashboard:loadDashboard,posts:loadPosts,authors:loadAuthors,featured:loadFeatured,navigation:loadNavigation,downloads:loadDownloads,faqs:loadFaqs,glossary:loadGlossary,about:loadAbout,settings:loadSettings};
   if(loaders[name])loaders[name]();
 }
@@ -300,7 +324,7 @@ function openPostForm(p){
         <button class="btn btn-s btn-o" onclick="addContentBlock()">+ Add Block</button>
       </div>
     </div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal()">Cancel</button><button class="btn btn-p" onclick="savePost()">Save Post</button></div>`);
+    <div class="modal-act"><button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button></div>`);
   
   window._postBlocks=post.content||[];
   renderBlocks();
@@ -392,7 +416,7 @@ function saveBlock(type,idx){
   closeModal();renderBlocks();
 }
 
-async function savePost(){
+async function savePost(closeAfter){
   const id=document.getElementById('fp-id').value.trim();
   if(!id){toast('ID required','err');return;}
   const row={
@@ -406,7 +430,16 @@ async function savePost(){
   };
   const{error}=await dbUpsert('posts',row);
   if(error){toast('Error: '+error.message,'err');return;}
-  toast('Post saved!');closeModal();loadPosts();
+  toast('Post saved!');
+  if(closeAfter){closeModal();loadPosts();return;}
+  // Stay in editor - make ID readonly since it's now saved
+  document.getElementById('fp-id').readOnly=true;
+  // Update modal title
+  const modalH2=document.querySelector('#modal h2');
+  if(modalH2)modalH2.textContent='Edit Post';
+  // Update buttons to show saved state
+  const actBar=document.querySelector('.modal-act');
+  if(actBar)actBar.innerHTML='<button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button><span style="color:var(--success);font-size:0.8rem;display:flex;align-items:center;gap:4px">✓ Saved</span>';
 }
 
 // ===== AUTHORS =====
@@ -689,5 +722,6 @@ async function saveSettings(){
   toast('Settings saved!');
 }
 </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"1954b47c125f43f8b4338b3c4f804e4f","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
