@@ -8,9 +8,7 @@ const SupabaseClient = {
       console.log('[Supabase] No credentials configured, using JSON files');
       return false;
     }
-    
     try {
-      // Load Supabase from CDN (only dependency)
       const script = document.createElement('script');
       script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
       script.onload = () => {
@@ -19,30 +17,22 @@ const SupabaseClient = {
         console.log('[Supabase] Connected');
         window.dispatchEvent(new Event('supabase-ready'));
       };
-      script.onerror = () => {
-        console.warn('[Supabase] Failed to load SDK, using JSON fallback');
-      };
+      script.onerror = () => console.warn('[Supabase] Failed to load SDK');
       document.head.appendChild(script);
       return true;
-    } catch (e) {
-      console.warn('[Supabase] Init error:', e);
-      return false;
-    }
+    } catch (e) { console.warn('[Supabase] Init error:', e); return false; }
   },
   
-  // Generic fetch from table
-  async fetchAll(table, orderBy, ascending) {
+  // DB helpers
+  async fetchAll(table, orderBy, asc) {
     if (!this.connected || !this.client) return null;
     try {
-      let query = this.client.from(table).select('*');
-      if (orderBy) query = query.order(orderBy, { ascending: ascending !== false });
-      const { data, error } = await query;
+      let q = this.client.from(table).select('*');
+      if (orderBy) q = q.order(orderBy, { ascending: asc !== false });
+      const { data, error } = await q;
       if (error) throw error;
       return data;
-    } catch (e) {
-      console.warn(`[Supabase] fetchAll(${table}) error:`, e);
-      return null;
-    }
+    } catch (e) { console.warn(`[Supabase] fetchAll(${table}):`, e); return null; }
   },
   
   async fetchOne(table, id) {
@@ -51,24 +41,7 @@ const SupabaseClient = {
       const { data, error } = await this.client.from(table).select('*').eq('id', id).single();
       if (error) throw error;
       return data;
-    } catch (e) {
-      console.warn(`[Supabase] fetchOne(${table}, ${id}) error:`, e);
-      return null;
-    }
-  },
-  
-  async fetchWhere(table, column, value, orderBy) {
-    if (!this.connected || !this.client) return null;
-    try {
-      let query = this.client.from(table).select('*').eq(column, value);
-      if (orderBy) query = query.order(orderBy);
-      const { data, error } = await query;
-      if (error) throw error;
-      return data;
-    } catch (e) {
-      console.warn(`[Supabase] fetchWhere error:`, e);
-      return null;
-    }
+    } catch (e) { return null; }
   },
   
   async insert(table, row) {
@@ -77,10 +50,7 @@ const SupabaseClient = {
       const { data, error } = await this.client.from(table).insert(row).select();
       if (error) throw error;
       return data;
-    } catch (e) {
-      console.warn(`[Supabase] insert(${table}) error:`, e);
-      return null;
-    }
+    } catch (e) { console.warn(`[Supabase] insert(${table}):`, e); return null; }
   },
   
   async update(table, id, updates) {
@@ -89,10 +59,7 @@ const SupabaseClient = {
       const { data, error } = await this.client.from(table).update(updates).eq('id', id).select();
       if (error) throw error;
       return data;
-    } catch (e) {
-      console.warn(`[Supabase] update(${table}) error:`, e);
-      return null;
-    }
+    } catch (e) { return null; }
   },
   
   async delete(table, id) {
@@ -101,21 +68,37 @@ const SupabaseClient = {
       const { error } = await this.client.from(table).delete().eq('id', id);
       if (error) throw error;
       return true;
-    } catch (e) {
-      console.warn(`[Supabase] delete(${table}) error:`, e);
-      return null;
-    }
+    } catch (e) { return null; }
   },
   
   async getSetting(key) {
     if (!this.connected || !this.client) return null;
     try {
-      const { data, error } = await this.client.from('settings').select('value').eq('key', key).single();
-      if (error) throw error;
+      const { data } = await this.client.from('settings').select('value').eq('key', key).single();
       return data ? data.value : null;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
+  },
+  
+  // Save contact message to DB
+  async saveContactMessage(name, email, message) {
+    if (!this.connected || !this.client) return false;
+    try {
+      const { error } = await this.client.from('contact_messages').insert({ name, email, message });
+      return !error;
+    } catch (e) { return false; }
+  },
+  
+  // Save newsletter subscriber to DB
+  async saveSubscriber(name, email) {
+    if (!this.connected || !this.client) return { success: false };
+    try {
+      const { data, error } = await this.client.from('newsletter_subscribers').insert({ name, email }).select();
+      if (error) {
+        if (error.code === '23505') return { success: false, duplicate: true };
+        throw error;
+      }
+      return { success: true, data };
+    } catch (e) { return { success: false }; }
   },
   
   // Storage helpers
@@ -124,19 +107,26 @@ const SupabaseClient = {
     try {
       const { data } = this.client.storage.from(bucket).getPublicUrl(path);
       return data ? data.publicUrl : null;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
   },
   
-  async uploadFile(bucket, path, file) {
+  async uploadFile(bucket, file, folder) {
     if (!this.connected || !this.client) return null;
     try {
-      const { data, error } = await this.client.storage.from(bucket).upload(path, file, { upsert: true });
+      // Generate unique filename to avoid conflicts
+      const ext = file.name.split('.').pop().toLowerCase();
+      const baseName = file.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9-_]/g, '-').toLowerCase();
+      const uniqueId = Date.now().toString(36) + Math.random().toString(36).substr(2, 5);
+      const fileName = folder ? `${folder}/${baseName}-${uniqueId}.${ext}` : `${baseName}-${uniqueId}.${ext}`;
+      
+      const { data, error } = await this.client.storage.from(bucket).upload(fileName, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
       if (error) throw error;
-      return this.getPublicUrl(bucket, path);
+      return this.getPublicUrl(bucket, fileName);
     } catch (e) {
-      console.warn(`[Supabase] upload error:`, e);
+      console.warn('[Supabase] Upload error:', e);
       return null;
     }
   },
@@ -145,21 +135,15 @@ const SupabaseClient = {
     if (!this.connected || !this.client) return null;
     try {
       const { error } = await this.client.storage.from(bucket).remove([path]);
-      if (error) throw error;
-      return true;
-    } catch (e) {
-      return null;
-    }
+      return !error;
+    } catch (e) { return null; }
   },
   
   async listFiles(bucket, folder) {
     if (!this.connected || !this.client) return null;
     try {
-      const { data, error } = await this.client.storage.from(bucket).list(folder || '');
-      if (error) throw error;
+      const { data } = await this.client.storage.from(bucket).list(folder || '');
       return data;
-    } catch (e) {
-      return null;
-    }
+    } catch (e) { return null; }
   }
 };
