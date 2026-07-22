@@ -203,19 +203,20 @@ function toast(m,t='ok'){const el=document.getElementById('toast');el.textConten
 function openModal(h){document.getElementById('modal').innerHTML=h;document.getElementById('modal-bg').classList.add('open');}
 function closeModal(){document.getElementById('modal-bg').classList.remove('open');}
 
-async function dbAll(t,c,a){if(!db)return[];let q=db.from(t).select('*');if(c)q=q.order(c,{ascending:a!==false});const{d}=await q;return d||[];}
-async function dbGet(t,id){if(!db)return null;const{data}=await db.from(t).select('*').eq('id',id).single();return data;}
-async function dbUp(t,row){if(!db)return{error:'No DB'};return await db.from(t).upsert(row);}
-async function dbDel(t,id,col){if(!db)return{error:'No DB'};let q=db.from(t).delete();return col?await q.eq(col,id):await q.eq('id',id);}
+async function dbAll(t,c,a){if(!db)return[];try{let q=db.from(t).select('*');if(c)q=q.order(c,{ascending:a!==false});const{data,error}=await q;if(error)throw error;return data||[];}catch(e){console.warn('dbAll('+t+'):',e);return[];}}
+async function dbGet(t,id){if(!db)return null;try{const{data,error}=await db.from(t).select('*').eq('id',id).single();if(error)throw error;return data;}catch(e){console.warn('dbGet:',e);return null;}}
+async function dbUp(t,row){if(!db)return{error:'No DB'};try{return await db.from(t).upsert(row);}catch(e){return{error:e};}}
+async function dbDel(t,id,col){if(!db)return{error:'No DB'};try{let q=db.from(t).delete();return col?await q.eq(col,id):await q.eq('id',id);}catch(e){return{error:e};}}
 
 function pg(arr,n){const tot=arr.length,tp=Math.ceil(tot/PAGE)||1,s=(n-1)*PAGE;return{items:arr.slice(s,s+PAGE),tot,tp,p:n};}
 function rPag(id,n,tp,cb){const el=document.getElementById(id);if(tp<=1){el.innerHTML='';return;}let h='<button '+(n<=1?'disabled':'')+' onclick="'+cb+'('+(n-1)+')">‹</button>';for(let i=1;i<=tp;i++){if(tp>7&&i>3&&i<tp-2&&Math.abs(i-n)>1){if(i===4)h+='<span>…</span>';continue;}h+='<button class="'+(i===n?'active':'')+'" onclick="'+cb+'('+i+')">'+i+'</button>';}h+='<button '+(n>=tp?'disabled':'')+' onclick="'+cb+'('+(n+1)+')">›</button>';el.innerHTML=h;}
 
 // Upload helper
 function uploadUI(fieldId,bucket,label,currentUrl){
+  const accept=bucket.includes('image')?'image/*':'.pdf,.docx,.xlsx,.pptx,image/*';
   return`<div class="fg"><label>${label}</label>
     <div class="upload-area" id="ua-${fieldId}" onclick="document.getElementById('uf-${fieldId}').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event,'${fieldId}','${bucket}')">
-      <input type="file" id="uf-${fieldId}" accept="${bucket.includes('image')?'image/*':'.pdf,.docx,.xlsx,.pptx'}" onchange="handleFileSelect(this,'${fieldId}','${bucket}')">
+      <input type="file" id="uf-${fieldId}" accept="${accept}" onchange="handleFileSelect(this,'${fieldId}','${bucket}')">
       <p style="font-size:.8rem;color:var(--t2)">📁 Click to upload or drag & drop</p>
       <div id="up-${fieldId}"></div>
     </div>
@@ -312,7 +313,7 @@ function oPF(p){
     <div class="inline-row"><div class="fg"><label>Image Alt</label><input class="fc" id="fp-imgalt" value="${post.featured_image_alt||''}"></div><div class="fg"><label>Image Caption</label><input class="fc" id="fp-imgcap" value="${post.featured_image_caption||''}"></div></div>
     <div class="fg"><label>Related Post IDs (comma separated)</label><input class="fc" id="fp-related" value="${(post.related_posts||[]).join(', ')}"></div>
     <div class="fg"><label><strong>Content Blocks</strong></label><div id="fp-blocks"></div><div id="fp-block-editor" style="display:none"></div><div class="add-block-bar" id="fp-add-bar"><select id="fp-newtype"><option value="paragraph">Paragraph</option><option value="heading">Heading</option><option value="list">List</option><option value="quote">Quote</option><option value="table">Table</option><option value="callout">Callout</option></select><button type="button" class="btn btn-s btn-o" onclick="addBlock()">+ Add Block</button></div></div>
-    <div class="modal-act"><button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button></div>`);
+    <div class="modal-act"><button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-p" onclick="savePost()">Save</button></div>`);
   window._blocks=post.content||[];rBlocks();
 }
 function onCatCh(){const c=document.getElementById('fp-cat').value,s=document.getElementById('fp-sub');s.innerHTML='<option value="">Select…</option>'+subsD.filter(x=>x.category_id===c).map(x=>`<option value="${x.id}">${x.title}</option>`).join('');}
@@ -357,17 +358,16 @@ function saveBl(type,idx){
   cancelBE();rBlocks();toast('Block saved!');
 }
 
-async function savePost(close){
+async function savePost(){
   const id=document.getElementById('fp-id').value.trim();
   if(!id){toast('ID required','err');return;}
   const row={id,title:document.getElementById('fp-title').value,excerpt:document.getElementById('fp-excerpt').value,category:document.getElementById('fp-cat').value,subtopic:document.getElementById('fp-sub').value||null,author:document.getElementById('fp-author').value||null,published_date:document.getElementById('fp-date').value,tags:document.getElementById('fp-tags').value.split(',').map(t=>t.trim()).filter(Boolean),featured_image_src:getUploadUrl('fp-img'),featured_image_alt:document.getElementById('fp-imgalt').value,featured_image_caption:document.getElementById('fp-imgcap').value||null,content:window._blocks||[],related_posts:document.getElementById('fp-related').value.split(',').map(t=>t.trim()).filter(Boolean)};
   const{error}=await dbUp('posts',row);
   if(error){toast('Error: '+error.message,'err');return;}
   toast('Post saved!');
-  if(close){closeModal();loadPosts();return;}
   document.getElementById('fp-id').readOnly=true;
   const h2=document.querySelector('#modal h2');if(h2)h2.textContent='Edit Post';
-  document.querySelector('.modal-act').innerHTML='<button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-o" onclick="savePost(true)">Save & Close</button><button class="btn btn-p" onclick="savePost(false)">Save</button><span style="color:var(--ok);font-size:.8rem;display:flex;align-items:center;gap:4px">✓ Saved</span>';
+  document.querySelector('.modal-act').innerHTML='<button class="btn btn-o" onclick="closeModal();loadPosts()">Close</button><button class="btn btn-p" onclick="savePost()">Save</button><span style="color:var(--ok);font-size:.8rem;display:flex;align-items:center;gap:4px">✓ Saved</span>';
 }
 
 // ===== AUTHORS =====
